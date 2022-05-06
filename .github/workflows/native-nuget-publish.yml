@@ -68,6 +68,11 @@ jobs:
         os:
           - ubuntu-18.04
           - macOS-10.15
+        include:
+          - ext: so
+            os: ubuntu-18.04
+          - ext: dylib
+            os: macOS-10.15
     if: "!contains(github.event.head_commit.message, 'ci skip')"
     steps:
       - uses: actions/checkout@v3
@@ -90,6 +95,7 @@ jobs:
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
+          name: ${{ matrix.os }}.ziti4dotnet.${{ matrix.ext }}
           path: ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build/library/libziti4dotnet.*
           if-no-files-found: error
       
