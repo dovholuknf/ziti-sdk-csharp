@@ -6,7 +6,7 @@ set(ZITI_4_DOTNET_SOURCE
         ${PROJECT_SOURCE_DIR}/library/ziti4dotnet.c
 )
 
-add_library(ziti4dotnet SHARED ${ZITI_4_DOTNET_SOURCE} ${ZITI_4_DOTNET_HEADERS} ziti.def )
+add_library(ziti4dotnet SHARED ${ZITI_4_DOTNET_SOURCE} ${ZITI_4_DOTNET_HEADERS} )
 
 target_include_directories(ziti4dotnet
         PUBLIC ${CMAKE_HOME_DIRECTORY}/includes

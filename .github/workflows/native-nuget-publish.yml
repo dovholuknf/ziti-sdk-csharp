@@ -5,29 +5,70 @@ on:
     inputs:
       version:
         description: Version of CSDK/Nuget Package
-        default: 0.25.4
+        default: 0.28.1
         required: true
 env:
   ZITI_SDK_C_BRANCH: ${{ github.event.inputs.version }}
 jobs:
-  build-csdk-win:
+  native-build-win-x86:
     runs-on: windows-latest
+    env:
+      BUILD_NUMBER: ${{ github.run_number }}
     if: "!contains(github.event.head_commit.message, 'ci skip')"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v2
         with:
           dotnet-version: 5.0.x
       - name: Generate Native Libraries
         run: ${{ github.workspace }}/ZitiNativeApiForDotnetCore/msvc-build.bat
       - name: compile x86
         run: cmake --build ${{ github.workspace }}/ZitiNativeApiForDotnetCore/build-win/x86 --config Release
+  native-build-win-x64:
+    runs-on: windows-latest
+    env:
+      BUILD_NUMBER: ${{ github.run_number }}
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 5.0.x
+      - name: Generate Native Libraries
+        run: ${{ github.workspace }}/ZitiNativeApiForDotnetCore/msvc-build.bat
       - name: compile x64
         run: cmake --build ${{ github.workspace }}/ZitiNativeApiForDotnetCore/build-win/x64 --config Release
-      - name: Pack Ziti.NET.Standard.native
-        run: nuget pack native-package.nuspec -Version ${{ env.ZITI_SDK_C_BRANCH }}
-      - name: Publish Ziti.NET.Standard.native
-        run: nuget push Ziti.NET.Standard.native.${{ env.ZITI_SDK_C_BRANCH }}.nupkg -NonInteractive -ApiKey ${{secrets.NUGET_API_KEY}} -Source https://api.nuget.org/v3/index.json
+  native-build-linux-mac:
+    runs-on: ${{ matrix.os }}
+    env:
+      BUILD_NUMBER: ${{ github.run_number }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-18.04
+          - macOS-10.15
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 5.0.x
+      - name: setup/build CMake
+        run: |
+          echo "build number = ${BUILD_NUMBER}"
+          cmake -E make_directory ${{runner.workspace}}/build
+          cmake -S ${{ github.workspace }} -B ${{runner.workspace}}/build
+          cmake --build ${{runner.workspace}}/build
+      - name: make artifacts
+        run: cmake --build ${{runner.workspace}}/build
+      
+      
