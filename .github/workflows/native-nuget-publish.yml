@@ -33,7 +33,7 @@ jobs:
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: x86/ziti4dotnet.dll
+          name: x86.ziti4dotnet.dll
           path: ${{runner.workspace}}/ziti-sdk-csharp/ZitiNativeApiForDotnetCore/build-win/x86/library/Release/ziti4dotnet.dll
           if-no-files-found: error
   native-build-win-x64:
@@ -56,7 +56,7 @@ jobs:
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: x64/ziti4dotnet.dll
+          name: x64.ziti4dotnet.dll
           path: ${{runner.workspace}}/ziti-sdk-csharp/ZitiNativeApiForDotnetCore/build-win/x64/library/Release/ziti4dotnet.dll
           if-no-files-found: error
   native-build-linux-mac:
