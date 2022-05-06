@@ -76,7 +76,6 @@ jobs:
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: libziti4dotnet.*
-          path: ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build/library
+          path: ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build/libziti4dotnet.*
       
       
