@@ -30,12 +30,11 @@ jobs:
         run: ${{ github.workspace }}/ZitiNativeApiForDotnetCore/msvc-build.bat
       - name: compile x86
         run: cmake --build ${{ github.workspace }}/ZitiNativeApiForDotnetCore/build-win/x86 --config Release
-      - name: upload artifacts
-        uses: actions/upload-artifact@v3
+      - name: cache artifacts
+        uses: actions/cache@v3
         with:
-          name: x86.ziti4dotnet.dll
+          key: x86.ziti4dotnet.dll
           path: ${{runner.workspace}}/ziti-sdk-csharp/ZitiNativeApiForDotnetCore/build-win/x86/library/Release/ziti4dotnet.dll
-          if-no-files-found: error
   native-build-win-x64:
     runs-on: windows-2019
     env:
@@ -53,12 +52,11 @@ jobs:
         run: ${{ github.workspace }}/ZitiNativeApiForDotnetCore/msvc-build.bat
       - name: compile x64
         run: cmake --build ${{ github.workspace }}/ZitiNativeApiForDotnetCore/build-win/x64 --config Release
-      - name: upload artifacts
-        uses: actions/upload-artifact@v3
+      - name: cache artifacts
+        uses: actions/cache@v3
         with:
-          name: x64.ziti4dotnet.dll
+          key: x64.ziti4dotnet.dll
           path: ${{runner.workspace}}/ziti-sdk-csharp/ZitiNativeApiForDotnetCore/build-win/x64/library/Release/ziti4dotnet.dll
-          if-no-files-found: error
   native-build-linux-mac:
     runs-on: ${{ matrix.os }}
     env:
@@ -92,11 +90,34 @@ jobs:
         run: cmake --build ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build
       - name: find the artifacts
         run: find ${{runner.workspace}} -name "*ziti4dotnet*"
-      - name: upload artifacts
-        uses: actions/upload-artifact@v3
+      - name: cache artifacts
+        uses: actions/cache@v3
         with:
-          name: ${{ matrix.os }}.ziti4dotnet.${{ matrix.ext }}
-          path: ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build/library/libziti4dotnet.*
-          if-no-files-found: error
-      
-      
+          path: ${{ matrix.os }}.ziti4dotnet.${{ matrix.ext }}
+          key: ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build/library/libziti4dotnet.*
+  create-nuget-package:
+    needs: [native-build-win-x86, native-build-win-x64, native-build-linux-mac]
+    runs-on: windows-2019
+    steps:
+      - name: uncache windows x86
+        uses: actions/cache@v3
+        with:
+          key: x86.ziti4dotnet.dll
+          path: ${{runner.workspace}}/ziti-sdk-csharp/ZitiNativeApiForDotnetCore/build-win/x86/library/Release/ziti4dotnet.dll
+      - name: uncache windows x64
+        uses: actions/cache@v3
+        with:
+          key: x86.ziti4dotnet.dll
+          path: ${{runner.workspace}}/ziti-sdk-csharp/ZitiNativeApiForDotnetCore/build-win/x86/library/Release/ziti4dotnet.dll
+      - name: uncache linux
+        uses: actions/cache@v3
+        with:
+          key: ubuntu-18.04.ziti4dotnet.so
+          key: ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build/library/libziti4dotnet.so
+      - name: uncache macOS
+        uses: actions/cache@v3
+        with:
+          key: macOS-10.15.ziti4dotnet.dylib
+          key: ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build/library/libziti4dotnet.dylib
+      - name: find libs
+        run: find ${{runner.workspace}} -name "*ziti4dotnet*"
