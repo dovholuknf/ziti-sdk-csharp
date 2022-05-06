@@ -68,10 +68,10 @@ jobs:
       - name: setup/build CMake
         run: |
           echo "build number = ${BUILD_NUMBER}"
-          cmake -E make_directory ${{runner.workspace}}/build
-          cmake -S ${{ github.workspace }} -B ${{runner.workspace}}/build
-          cmake --build ${{runner.workspace}}/build
+          cmake -E make_directory ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build
+          cmake -S ${{ github.workspace }}/ZitiNativeApiForDotnetCore -B ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build
+          cmake --build ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build
       - name: make artifacts
-        run: cmake --build ${{runner.workspace}}/build
+        run: cmake --build ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build
       
       
