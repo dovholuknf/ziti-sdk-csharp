@@ -30,6 +30,12 @@ jobs:
         run: ${{ github.workspace }}/ZitiNativeApiForDotnetCore/msvc-build.bat
       - name: compile x86
         run: cmake --build ${{ github.workspace }}/ZitiNativeApiForDotnetCore/build-win/x86 --config Release
+      - name: upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: x86/ziti4dotnet.dll
+          path: ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build/*/ziti4dotnet.dll
+          if-no-files-found: error
   native-build-win-x64:
     runs-on: windows-2019
     env:
@@ -47,6 +53,12 @@ jobs:
         run: ${{ github.workspace }}/ZitiNativeApiForDotnetCore/msvc-build.bat
       - name: compile x64
         run: cmake --build ${{ github.workspace }}/ZitiNativeApiForDotnetCore/build-win/x64 --config Release
+      - name: upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: x64/ziti4dotnet.dll
+          path: ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build/*/ziti4dotnet.dll
+          if-no-files-found: error
   native-build-linux-mac:
     runs-on: ${{ matrix.os }}
     env:
@@ -72,10 +84,11 @@ jobs:
           cmake -S ${{ github.workspace }}/ZitiNativeApiForDotnetCore -B ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build
           cmake --build ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build
       - name: make artifacts
-        run: cmake --build ${{runner.workspace}}/ZitiNativeApiForDotnetCore/*/build
+        run: cmake --build ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
           path: ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build/*/libziti4dotnet.*
+          if-no-files-found: error
       
       
