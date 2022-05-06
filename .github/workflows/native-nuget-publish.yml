@@ -90,7 +90,7 @@ jobs:
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          path: ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build/*/libziti4dotnet.*
+          path: ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build/library/libziti4dotnet.*
           if-no-files-found: error
       
       
