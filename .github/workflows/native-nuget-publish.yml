@@ -85,6 +85,8 @@ jobs:
           cmake --build ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build
       - name: make artifacts
         run: cmake --build ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build
+      - name: find the artifacts
+        run: find . -name "*ziti4dotnet*"
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
