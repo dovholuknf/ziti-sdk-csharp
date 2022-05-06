@@ -72,10 +72,10 @@ jobs:
           cmake -S ${{ github.workspace }}/ZitiNativeApiForDotnetCore -B ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build
           cmake --build ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build
       - name: make artifacts
-        run: cmake --build ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build
+        run: cmake --build ${{runner.workspace}}/ZitiNativeApiForDotnetCore/*/build
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          path: ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build/libziti4dotnet.*
+          path: ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build/*/libziti4dotnet.*
       
       
