@@ -1,6 +1,9 @@
 name: Build and publish ziti native libraries to nuget
 
 on:
+  push:
+    branches:
+      - enable-macos-linux
   workflow_dispatch:
     inputs:
       version:
