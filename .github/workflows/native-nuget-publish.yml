@@ -1,4 +1,4 @@
-name: Build and publish ziti native libraries to nuget
+name: Matrix Build and publish Ziti Native to nuget
 
 on:
   push:
@@ -34,7 +34,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: x86/ziti4dotnet.dll
-          path: ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build/*/ziti4dotnet.dll
+          path: ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build-win/x86/library/Release/ziti4dotnet.dll
           if-no-files-found: error
   native-build-win-x64:
     runs-on: windows-2019
@@ -57,7 +57,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: x64/ziti4dotnet.dll
-          path: ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build/*/ziti4dotnet.dll
+          path: ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build-win/x64/library/Release/ziti4dotnet.dll
           if-no-files-found: error
   native-build-linux-mac:
     runs-on: ${{ matrix.os }}
