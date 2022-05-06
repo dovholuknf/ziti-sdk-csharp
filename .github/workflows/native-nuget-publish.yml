@@ -113,11 +113,11 @@ jobs:
         uses: actions/cache@v3
         with:
           key: ubuntu-18.04.ziti4dotnet.so
-          key: ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build/library/libziti4dotnet.so
+          path: ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build/library/libziti4dotnet.so
       - name: uncache macOS
         uses: actions/cache@v3
         with:
           key: macOS-10.15.ziti4dotnet.dylib
-          key: ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build/library/libziti4dotnet.dylib
+          path: ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build/library/libziti4dotnet.dylib
       - name: find libs
         run: find ${{runner.workspace}} -name "*ziti4dotnet*"
