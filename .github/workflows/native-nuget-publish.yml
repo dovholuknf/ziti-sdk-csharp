@@ -13,8 +13,8 @@ on:
 env:
   ZITI_SDK_C_BRANCH: ${{ github.event.inputs.version }}
   BUILD_NUMBER: ${{ github.run_number }}
-  BASEDIR: ${{ github.workspace }}/ZitiNativeApiForDotnetCore
-  TARGETDIR: ${{ github.workspace }}/ZitiNativeApiForDotnetCore/build
+  BASEDIR: '${{ github.workspace }}/ZitiNativeApiForDotnetCore'
+  TARGETDIR: '${{ github.workspace }}/ZitiNativeApiForDotnetCore/build'
 jobs:
   native-build-win-x86:
     runs-on: windows-2019
