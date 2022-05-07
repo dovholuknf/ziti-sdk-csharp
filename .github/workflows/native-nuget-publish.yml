@@ -80,6 +80,8 @@ jobs:
             os: ubuntu-18.04
           - ext: dylib
             os: macOS-10.15
+          - ext: dll
+            os: windows-2019
     if: "!contains(github.event.head_commit.message, 'ci skip')"
     steps:
       - uses: actions/checkout@v3
@@ -92,14 +94,14 @@ jobs:
           cmake -S ${{ env.BASEDIR }} -B ${{ env.TARGETDIR }}
           cmake --build ${{ env.TARGETDIR }}
       - name: make artifacts
-        run: cmake --build ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build
+        run: cmake --build ${{ env.TARGETDIR }}
       - name: find the artifacts
         run: find ${{runner.workspace}} -name "*ziti4dotnet*"
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}.ziti4dotnet.${{ matrix.ext }}
-          path: ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build/library/libziti4dotnet.*
+          path: ${{ env.TARGETDIR }}/library/libziti4dotnet.*
           if-no-files-found: error
   create-nuget-package:
     runs-on: ubuntu-latest
