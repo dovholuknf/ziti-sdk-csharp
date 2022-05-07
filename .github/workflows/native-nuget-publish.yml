@@ -38,6 +38,9 @@ jobs:
             os: windows-2019
     if: "!contains(github.event.head_commit.message, 'ci skip')"
     steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: setup/build CMake
         run: |
           echo "build number = ${BUILD_NUMBER}"
