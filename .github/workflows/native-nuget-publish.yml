@@ -16,76 +16,26 @@ env:
   BASEDIR: ${{ github.workspace }}/ZitiNativeApiForDotnetCore
   TARGETDIR: ${{ github.workspace }}/ZitiNativeApiForDotnetCore/build
 jobs:
-  native-build-win-x86:
-    runs-on: windows-2019
-    if: "!contains(github.event.head_commit.message, 'ci skip')"
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: prep defgen - run cmake
-        run: |
-          cmake -E make_directory ${{ env.TARGETDIR }}
-          cmake -S ${{ env.BASEDIR }} -B ${{ env.TARGETDIR }} -G "Visual Studio 16 2019" -A Win32
-          cmake --build ${{ env.TARGETDIR }} --config Release
-      - name: run defgen
-        run: |
-          cd ${{ env.BASEDIR }}\library
-          ${{ env.BASEDIR }}\defgen 64 ${{ env.TARGETDIR }}\_deps\ziti-sdk-c-build\library\Release\ziti.dll
-      - name: run cmake with updated ziti.def to create csharp native lib
-        run: |
-          cmake -S ${{ env.BASEDIR }} -B ${{ env.TARGETDIR }}
-          cmake --build ${{ env.TARGETDIR }} --config Release
-      - name: upload artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: x86.ziti4dotnet.dll
-          path: ${{runner.workspace}}/ziti-sdk-csharp/ZitiNativeApiForDotnetCore/build/library/Release/ziti4dotnet.dll
-          if-no-files-found: error
-  native-build-win-x64:
-    runs-on: windows-2019
-    if: "!contains(github.event.head_commit.message, 'ci skip')"
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: prep defgen - run cmake
-        run: |
-          cmake -E make_directory ${{ env.TARGETDIR }}
-          cmake -S ${{ env.BASEDIR }} -B ${{ env.TARGETDIR }} -G "Visual Studio 16 2019" -A x64
-          cmake --build ${{ env.TARGETDIR }} --config Release
-      - name: run defgen
-        run: |
-          cd ${{ env.BASEDIR }}\library
-          ${{ env.BASEDIR }}\defgen 64 ${{ env.TARGETDIR }}\_deps\ziti-sdk-c-build\library\Release\ziti.dll
-      - name: run cmake with updated ziti.def to create csharp native lib
-        run: |
-          cmake -S ${{ env.BASEDIR }} -B ${{ env.TARGETDIR }}
-          cmake --build ${{ env.TARGETDIR }} --config Release
-      - name: upload artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: x64.ziti4dotnet.dll
-          path: ${{runner.workspace}}/ziti-sdk-csharp/ZitiNativeApiForDotnetCore/build/library/Release/ziti4dotnet.dll
-          if-no-files-found: error
-  native-build-linux-mac:
+  native-build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os:
           - ubuntu-18.04
           - macOS-10.15
+          - windows-2019
         include:
           - ext: so
+            prefix: lib
+            arch: x64
             os: ubuntu-18.04
-          - prefix: lib
-            os: ubuntu-18.04
-          - prefix: lib
-            os: macOS-10.15
           - ext: dylib
+            prefix: lib
+            arch: x64
             os: macOS-10.15
           - ext: dll
             pathext: /Release
+            arch: [x86, x64]
             os: windows-2019
     if: "!contains(github.event.head_commit.message, 'ci skip')"
     steps:
@@ -101,7 +51,7 @@ jobs:
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.os }}.ziti4dotnet.${{ matrix.ext }}
+          name: ${{ matrix.os }}.${{ matrix.arch }}.ziti4dotnet.${{ matrix.ext }}
           path: ${{ env.TARGETDIR }}/library${{ matrix.pathExt }}/${{ matrix.prefix }}ziti4dotnet.${{ matrix.ext }}
           if-no-files-found: error
   create-nuget-package:
