@@ -110,22 +110,22 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: x86.ziti4dotnet.dll
-          path: ${{runner.workspace}}/native/x86/ziti4dotnet.dll
+          path: ${{runner.workspace}}/native/x86/
       - name: uncache windows x64
         uses: actions/download-artifact@v3
         with:
           name: x64.ziti4dotnet.dll
-          path: ${{runner.workspace}}/native/x64/ziti4dotnet.dll
+          path: ${{runner.workspace}}/native/x64/
       - name: uncache linux
         uses: actions/download-artifact@v3
         with:
           name: ubuntu-18.04.ziti4dotnet.so
-          path: ${{runner.workspace}}/native/x64/libziti4dotnet.so
+          path: ${{runner.workspace}}/native/x64/
       - name: uncache macOS
         uses: actions/download-artifact@v3
         with:
           name: macOS-10.15.ziti4dotnet.dylib
-          path: ${{runner.workspace}}/native/x64/libziti4dotnet.dylib
+          path: ${{runner.workspace}}/native/x64/
       - name: find libs
         run: find ${{runner.workspace}} -name "*ziti4dotnet*"
       - name: Setup .NET Core
