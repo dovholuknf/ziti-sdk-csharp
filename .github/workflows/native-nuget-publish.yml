@@ -57,8 +57,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: [native-matrix-build]
     steps:
+      - run: mkdir ${{runner.workspace}}/native
       - name: download all artifacts
         uses: actions/download-artifact@v3
+        with:
+          path: ${{runner.workspace}}/native
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v2
         with:
