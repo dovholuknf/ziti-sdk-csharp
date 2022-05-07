@@ -82,4 +82,9 @@ jobs:
           dotnet-version: 5.0.x
       - name: Create the Nuget package
         run: nuget pack -version 1.2.3
+      - name: upload nuget package
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{runner.workspace}}/Ziti.NET.Standard.native.1.2.3.nupkg
+          if-no-files-found: error
       
