@@ -15,6 +15,7 @@ env:
   BUILD_NUMBER: ${{ github.run_number }}
   BASEDIR: '${{ github.workspace }}/ZitiNativeApiForDotnetCore'
   TARGETDIR: '${{ github.workspace }}/ZitiNativeApiForDotnetCore/build'
+  TTTT: hithere
 jobs:
   native-build-win-x86:
     runs-on: windows-2019
@@ -25,17 +26,17 @@ jobs:
           fetch-depth: 0
       - name: prep defgen - run cmake
         run: |
-          cmake -E make_directory ${{ TARGETDIR }}
-          cmake -S ${{ BASEDIR }} -B ${{ TARGETDIR }} -G "Visual Studio 16 2019" -A Win32
-          cmake --build ${{ TARGETDIR }}
+          cmake -E make_directory ${{ TTTT }}
+          cmake -S ${{ BASEDIR }} -B ${{ TTTT }} -G "Visual Studio 16 2019" -A Win32
+          cmake --build ${{ TTTT }}
       - name: run defgen
         run: |
           cd ${{ BASEDIR }}\library
-          ${{ BASEDIR }}\defgen 64 ${{ TARGETDIR }}\_deps\ziti-sdk-c-build\library\Debug\ziti.dll
+          ${{ BASEDIR }}\defgen 64 ${{ TTTT }}\_deps\ziti-sdk-c-build\library\Debug\ziti.dll
       - name: run cmake with updated ziti.def to create csharp native lib
         run: |
-          cmake -S ${{ BASEDIR }} -B ${{ TARGETDIR }}
-          cmake --build ${{ TARGETDIR }} --config Release
+          cmake -S ${{ BASEDIR }} -B ${{ TTTT }}
+          cmake --build ${{ TTTT }} --config Release
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -51,17 +52,17 @@ jobs:
           fetch-depth: 0
       - name: prep defgen - run cmake
         run: |
-          cmake -E make_directory ${{ TARGETDIR }}
-          cmake -S ${{ BASEDIR }} -B ${{ TARGETDIR }} -G "Visual Studio 16 2019" -A Win32
-          cmake --build ${{ TARGETDIR }}
+          cmake -E make_directory ${{ TTTT }}
+          cmake -S ${{ BASEDIR }} -B ${{ TTTT }} -G "Visual Studio 16 2019" -A Win32
+          cmake --build ${{ TTTT }}
       - name: run defgen
         run: |
           cd ${{ BASEDIR }}\library
-          ${{ BASEDIR }}\defgen 64 ${{ TARGETDIR }}\_deps\ziti-sdk-c-build\library\Debug\ziti.dll
+          ${{ BASEDIR }}\defgen 64 ${{ TTTT }}\_deps\ziti-sdk-c-build\library\Debug\ziti.dll
       - name: run cmake with updated ziti.def to create csharp native lib
         run: |
-          cmake -S ${{ BASEDIR }} -B ${{ TARGETDIR }}
-          cmake --build ${{ TARGETDIR }} --config Release
+          cmake -S ${{ BASEDIR }} -B ${{ TTTT }}
+          cmake --build ${{ TTTT }} --config Release
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -88,9 +89,9 @@ jobs:
       - name: setup/build CMake
         run: |
           echo "build number = ${BUILD_NUMBER}"
-          cmake -E make_directory ${{ TARGETDIR }}
-          cmake -S ${{ BASEDIR }} -B ${{ TARGETDIR }}
-          cmake --build ${{ TARGETDIR }}
+          cmake -E make_directory ${{ TTTT }}
+          cmake -S ${{ BASEDIR }} -B ${{ TTTT }}
+          cmake --build ${{ TTTT }}
       - name: make artifacts
         run: cmake --build ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build
       - name: find the artifacts
