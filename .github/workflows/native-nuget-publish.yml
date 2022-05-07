@@ -53,7 +53,6 @@ jobs:
           name: ${{ matrix.os }}.${{ matrix.arch }}.ziti4dotnet.${{ matrix.ext }}
           path: ${{ env.TARGETDIR }}/library${{ matrix.pathExt }}/${{ matrix.prefix }}ziti4dotnet.${{ matrix.ext }}
           if-no-files-found: error
-            echo "build n${BUILD_NUMBER} ${{ env.TARGETDIR }} ${{ env.BASEDIR }} ${{ matrix.ext }} ${{ matrix.prefix }} ${{ matrix.arch }} ${{ matrix.os }}"
   create-nuget-package:
     runs-on: ubuntu-latest
     needs: [native-matrix-build]
