@@ -78,9 +78,15 @@ jobs:
         include:
           - ext: so
             os: ubuntu-18.04
+          - prefix: lib
+            os: ubuntu-18.04
+          - prefix: lib
+            os: macOS-10.15
           - ext: dylib
             os: macOS-10.15
           - ext: dll
+            os: windows-2019
+          - pathext: /Release
             os: windows-2019
     if: "!contains(github.event.head_commit.message, 'ci skip')"
     steps:
@@ -97,7 +103,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}.ziti4dotnet.${{ matrix.ext }}
-          path: ${{ env.TARGETDIR }}/library/libziti4dotnet.*
+          path: ${{ env.TARGETDIR }}/library${{ matrix.pathExt }}/${{ matrix.prefix }}ziti4dotnet.${{ matrix.ext }}
           if-no-files-found: error
   create-nuget-package:
     runs-on: ubuntu-latest
