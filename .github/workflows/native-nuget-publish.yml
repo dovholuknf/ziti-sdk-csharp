@@ -17,19 +17,26 @@ jobs:
     runs-on: windows-2019
     env:
       BUILD_NUMBER: ${{ github.run_number }}
+      BASEDIR: ${{ github.workspace }}/ZitiNativeApiForDotnetCore
+      TARGETDIR: ${{ github.workspace }}/ZitiNativeApiForDotnetCore/build
     if: "!contains(github.event.head_commit.message, 'ci skip')"
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: 5.0.x
-      - name: Generate Native Libraries
-        run: ${{ github.workspace }}/ZitiNativeApiForDotnetCore/msvc-build.bat
-      - name: compile x86
-        run: cmake --build ${{ github.workspace }}/ZitiNativeApiForDotnetCore/build-win/x86 --config Release
+      - name: prep defgen - run cmake
+        run: |
+          cmake -E make_directory ${{ TARGETDIR }}
+          cmake -S ${{ BASEDIR }} -B ${{ TARGETDIR }} -G "Visual Studio 16 2019" -A Win32
+          cmake --build ${{ TARGETDIR }}
+      - name: run defgen
+        run: |
+          cd ${{ BASEDIR }}\library
+          ${{ BASEDIR }}\defgen 64 ${{ TARGETDIR }}\_deps\ziti-sdk-c-build\library\Debug\ziti.dll
+      - name: run cmake with updated ziti.def to create csharp native lib
+        run: |
+          cmake -S ${{ BASEDIR }} -B ${{ TARGETDIR }}
+          cmake --build ${{ TARGETDIR }} --config Release
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -40,19 +47,26 @@ jobs:
     runs-on: windows-2019
     env:
       BUILD_NUMBER: ${{ github.run_number }}
+      BASEDIR: ${{ github.workspace }}/ZitiNativeApiForDotnetCore
+      TARGETDIR: ${{ github.workspace }}/ZitiNativeApiForDotnetCore/build
     if: "!contains(github.event.head_commit.message, 'ci skip')"
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: 5.0.x
-      - name: Generate Native Libraries
-        run: ${{ github.workspace }}/ZitiNativeApiForDotnetCore/msvc-build.bat
-      - name: compile x64
-        run: cmake --build ${{ github.workspace }}/ZitiNativeApiForDotnetCore/build-win/x64 --config Release
+      - name: prep defgen - run cmake
+        run: |
+          cmake -E make_directory ${{ TARGETDIR }}
+          cmake -S ${{ BASEDIR }} -B ${{ TARGETDIR }} -G "Visual Studio 16 2019" -A Win32
+          cmake --build ${{ TARGETDIR }}
+      - name: run defgen
+        run: |
+          cd ${{ BASEDIR }}\library
+          ${{ BASEDIR }}\defgen 64 ${{ TARGETDIR }}\_deps\ziti-sdk-c-build\library\Debug\ziti.dll
+      - name: run cmake with updated ziti.def to create csharp native lib
+        run: |
+          cmake -S ${{ BASEDIR }} -B ${{ TARGETDIR }}
+          cmake --build ${{ TARGETDIR }} --config Release
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -78,16 +92,12 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: 5.0.x
       - name: setup/build CMake
         run: |
           echo "build number = ${BUILD_NUMBER}"
-          cmake -E make_directory ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build
-          cmake -S ${{ github.workspace }}/ZitiNativeApiForDotnetCore -B ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build
-          cmake --build ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build
+          cmake -E make_directory ${{ TARGETDIR }}
+          cmake -S ${{ BASEDIR }} -B ${{ TARGETDIR }}
+          cmake --build ${{ TARGETDIR }}
       - name: make artifacts
         run: cmake --build ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build
       - name: find the artifacts
