@@ -69,13 +69,13 @@ jobs:
       - name: move files to expected locations
         run: |
           mkdir -p ${{runner.workspace}}/runtimes/osx-x64/native
-          mkdir mv ${{runner.workspace}}/native/macos.x64.libziti4dotnet.dylib ${{runner.workspace}}/runtimes/osx-x64/native/libziti4dotnet.dylib
+          mv ${{runner.workspace}}/native/macos.x64.libziti4dotnet.dylib ${{runner.workspace}}/runtimes/osx-x64/native/libziti4dotnet.dylib
           mkdir -p ${{runner.workspace}}/runtimes/linux-x64/native
-          mkdir mv ${{runner.workspace}}/native/linux.x64.libziti4dotnet.so ${{runner.workspace}}/runtimes/linux-x64/native/libziti4dotnet.so
+          mv ${{runner.workspace}}/native/linux.x64.libziti4dotnet.so ${{runner.workspace}}/runtimes/linux-x64/native/libziti4dotnet.so
           mkdir -p ${{runner.workspace}}/runtimes/win-x86/native
-          mkdir mv ${{runner.workspace}}/native/win.x86.ziti4dotnet.dll ${{runner.workspace}}/runtimes/win-x86/native/ziti4dotnet.dll
+          mv ${{runner.workspace}}/native/win.x86.ziti4dotnet.dll ${{runner.workspace}}/runtimes/win-x86/native/ziti4dotnet.dll
           mkdir -p ${{runner.workspace}}/runtimes/win-x64/native
-          mkdir mv ${{runner.workspace}}/native/win.x64.ziti4dotnet.dll ${{runner.workspace}}/runtimes/win-x64/native/ziti4dotnet.dll
+          mv ${{runner.workspace}}/native/win.x64.ziti4dotnet.dll ${{runner.workspace}}/runtimes/win-x64/native/ziti4dotnet.dll
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v2
         with:
