@@ -25,15 +25,19 @@ jobs:
         include:
           - ext: so
             prefix: lib
+            dist: linux
             os: ubuntu-18.04
           - ext: dylib
             prefix: lib
+            dist: macos
             os: macOS-10.15
           - ext: dll
             pathext: /Release
+            dist: win
             os: windows-2019
           - ext: dll
             pathext: /Release
+            dist: win
             arch: x86
             os: windows-2019
     if: "!contains(github.event.head_commit.message, 'ci skip')"
@@ -50,7 +54,7 @@ jobs:
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.os }}.${{ matrix.arch }}.ziti4dotnet.${{ matrix.ext }}
+          name: ${{ matrix.dist }}.${{ matrix.arch }}.${{ matrix.prefix }}ziti4dotnet.${{ matrix.ext }}
           path: ${{ env.TARGETDIR }}/library${{ matrix.pathExt }}/${{ matrix.prefix }}ziti4dotnet.${{ matrix.ext }}
           if-no-files-found: error
   create-nuget-package:
@@ -62,8 +66,20 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           path: ${{runner.workspace}}/native
+      - name: move files to expected locations
+        run: |
+          mkdir -p ${{runner.workspace}}/runtimes/osx-x64/native
+          mkdir mv ${{runner.workspace}}/native/macos.x64.libziti4dotnet.dylib ${{runner.workspace}}/runtimes/osx-x64/native/libziti4dotnet.dylib
+          mkdir -p ${{runner.workspace}}/runtimes/linux-x64/native
+          mkdir mv ${{runner.workspace}}/native/linux.x64.libziti4dotnet.so ${{runner.workspace}}/runtimes/linux-x64/native/libziti4dotnet.so
+          mkdir -p ${{runner.workspace}}/runtimes/win-x86/native
+          mkdir mv ${{runner.workspace}}/native/win.x86.ziti4dotnet.dll ${{runner.workspace}}/runtimes/win-x86/native/ziti4dotnet.dll
+          mkdir -p ${{runner.workspace}}/runtimes/win-x64/native
+          mkdir mv ${{runner.workspace}}/native/win.x64.ziti4dotnet.dll ${{runner.workspace}}/runtimes/win-x64/native/ziti4dotnet.dll
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: 5.0.x
+      - name: Create the Nuget package
+        run: nuget pack -version 1.2.3
       
