@@ -102,26 +102,30 @@ jobs:
     runs-on: ubuntu-latest
     needs: [native-build-win-x86, native-build-win-x64, native-build-linux-mac]
     steps:
+      - run: |
+          mkdir ${{runner.workspace}}/native
+          mkdir ${{runner.workspace}}/native/x86
+          mkdir ${{runner.workspace}}/native/x64
       - name: uncache windows x86
         uses: actions/download-artifact@v3
         with:
           name: x86.ziti4dotnet.dll
-          path: ${{runner.workspace}}/ziti-sdk-csharp/ZitiNativeApiForDotnetCore/build-win/x86/library/Release/ziti4dotnet.dll
+          path: ${{runner.workspace}}/native/x86/ziti4dotnet.dll
       - name: uncache windows x64
         uses: actions/download-artifact@v3
         with:
-          name: x86.ziti4dotnet.dll
-          path: ${{runner.workspace}}/ziti-sdk-csharp/ZitiNativeApiForDotnetCore/build-win/x86/library/Release/ziti4dotnet.dll
+          name: x64.ziti4dotnet.dll
+          path: ${{runner.workspace}}/native/x64/ziti4dotnet.dll
       - name: uncache linux
         uses: actions/download-artifact@v3
         with:
           name: ubuntu-18.04.ziti4dotnet.so
-          path: ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build/library/libziti4dotnet.so
+          path: ${{runner.workspace}}/native/x64/libziti4dotnet.so
       - name: uncache macOS
         uses: actions/download-artifact@v3
         with:
           name: macOS-10.15.ziti4dotnet.dylib
-          path: ${{runner.workspace}}/ZitiNativeApiForDotnetCore/build/library/libziti4dotnet.dylib
+          path: ${{runner.workspace}}/native/x64/libziti4dotnet.dylib
       - name: find libs
         run: find ${{runner.workspace}} -name "*ziti4dotnet*"
       - name: Setup .NET Core
