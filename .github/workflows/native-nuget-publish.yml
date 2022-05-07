@@ -12,13 +12,12 @@ on:
         required: true
 env:
   ZITI_SDK_C_BRANCH: ${{ github.event.inputs.version }}
+  BUILD_NUMBER: ${{ github.run_number }}
+  BASEDIR: ${{ github.workspace }}/ZitiNativeApiForDotnetCore
+  TARGETDIR: ${{ github.workspace }}/ZitiNativeApiForDotnetCore/build
 jobs:
   native-build-win-x86:
     runs-on: windows-2019
-    env:
-      BUILD_NUMBER: ${{ github.run_number }}
-      BASEDIR: ${{ github.workspace }}/ZitiNativeApiForDotnetCore
-      TARGETDIR: ${{ github.workspace }}/ZitiNativeApiForDotnetCore/build
     if: "!contains(github.event.head_commit.message, 'ci skip')"
     steps:
       - uses: actions/checkout@v3
@@ -45,10 +44,6 @@ jobs:
           if-no-files-found: error
   native-build-win-x64:
     runs-on: windows-2019
-    env:
-      BUILD_NUMBER: ${{ github.run_number }}
-      BASEDIR: ${{ github.workspace }}/ZitiNativeApiForDotnetCore
-      TARGETDIR: ${{ github.workspace }}/ZitiNativeApiForDotnetCore/build
     if: "!contains(github.event.head_commit.message, 'ci skip')"
     steps:
       - uses: actions/checkout@v3
@@ -75,8 +70,6 @@ jobs:
           if-no-files-found: error
   native-build-linux-mac:
     runs-on: ${{ matrix.os }}
-    env:
-      BUILD_NUMBER: ${{ github.run_number }}
     strategy:
       matrix:
         os:
