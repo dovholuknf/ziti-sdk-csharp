@@ -27,11 +27,11 @@ jobs:
         run: |
           cmake -E make_directory ${{ env.TARGETDIR }}
           cmake -S ${{ env.BASEDIR }} -B ${{ env.TARGETDIR }} -G "Visual Studio 16 2019" -A Win32
-          cmake --build ${{ env.TARGETDIR }}
+          cmake --build ${{ env.TARGETDIR }} --config Release
       - name: run defgen
         run: |
           cd ${{ env.BASEDIR }}\library
-          ${{ env.BASEDIR }}\defgen 64 ${{ env.TARGETDIR }}\_deps\ziti-sdk-c-build\library\Debug\ziti.dll
+          ${{ env.BASEDIR }}\defgen 64 ${{ env.TARGETDIR }}\_deps\ziti-sdk-c-build\library\Release\ziti.dll
       - name: run cmake with updated ziti.def to create csharp native lib
         run: |
           cmake -S ${{ env.BASEDIR }} -B ${{ env.TARGETDIR }}
@@ -53,11 +53,11 @@ jobs:
         run: |
           cmake -E make_directory ${{ env.TARGETDIR }}
           cmake -S ${{ env.BASEDIR }} -B ${{ env.TARGETDIR }} -G "Visual Studio 16 2019" -A Win32
-          cmake --build ${{ env.TARGETDIR }}
+          cmake --build ${{ env.TARGETDIR }} --config Release
       - name: run defgen
         run: |
           cd ${{ env.BASEDIR }}\library
-          ${{ env.BASEDIR }}\defgen 64 ${{ env.TARGETDIR }}\_deps\ziti-sdk-c-build\library\Debug\ziti.dll
+          ${{ env.BASEDIR }}\defgen 64 ${{ env.TARGETDIR }}\_deps\ziti-sdk-c-build\library\Release\ziti.dll
       - name: run cmake with updated ziti.def to create csharp native lib
         run: |
           cmake -S ${{ env.BASEDIR }} -B ${{ env.TARGETDIR }}
@@ -92,11 +92,9 @@ jobs:
           echo "build number = ${BUILD_NUMBER}"
           cmake -E make_directory ${{ env.TARGETDIR }}
           cmake -S ${{ env.BASEDIR }} -B ${{ env.TARGETDIR }}
-          cmake --build ${{ env.TARGETDIR }}
+          cmake --build ${{ env.TARGETDIR }} --config Release
       - name: make artifacts
         run: cmake --build ${{ env.TARGETDIR }}
-      - name: find the artifacts
-        run: find ${{runner.workspace}} -name "*ziti4dotnet*"
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
