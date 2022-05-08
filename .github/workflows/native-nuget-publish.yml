@@ -64,27 +64,27 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - run: mkdir ${{runner.workspace}}/native
+      - run: mkdir ${{github.workspace}}/native
       - name: download all artifacts
         uses: actions/download-artifact@v3
         with:
-          path: ${{runner.workspace}}/native
+          path: ${{github.workspace}}/native
       - name: move files to expected locations
         run: |
-          mkdir -p ${{runner.workspace}}/runtimes/osx-x64/native
-          mv ${{runner.workspace}}/native/macos.x64.libziti4dotnet.dylib ${{runner.workspace}}/runtimes/osx-x64/native/libziti4dotnet.dylib
-          mkdir -p ${{runner.workspace}}/runtimes/linux-x64/native
-          mv ${{runner.workspace}}/native/linux.x64.libziti4dotnet.so ${{runner.workspace}}/runtimes/linux-x64/native/libziti4dotnet.so
-          mkdir -p ${{runner.workspace}}/runtimes/win-x86/native
-          mv ${{runner.workspace}}/native/win.x86.ziti4dotnet.dll ${{runner.workspace}}/runtimes/win-x86/native/ziti4dotnet.dll
-          mkdir -p ${{runner.workspace}}/runtimes/win-x64/native
-          mv ${{runner.workspace}}/native/win.x64.ziti4dotnet.dll ${{runner.workspace}}/runtimes/win-x64/native/ziti4dotnet.dll
+          mkdir -p ${{github.workspace}}/runtimes/osx-x64/native
+          mv ${{github.workspace}}/native/macos.x64.libziti4dotnet.dylib ${{github.workspace}}/runtimes/osx-x64/native/libziti4dotnet.dylib
+          mkdir -p ${{github.workspace}}/runtimes/linux-x64/native
+          mv ${{github.workspace}}/native/linux.x64.libziti4dotnet.so ${{github.workspace}}/runtimes/linux-x64/native/libziti4dotnet.so
+          mkdir -p ${{github.workspace}}/runtimes/win-x86/native
+          mv ${{github.workspace}}/native/win.x86.ziti4dotnet.dll ${{github.workspace}}/runtimes/win-x86/native/ziti4dotnet.dll
+          mkdir -p ${{github.workspace}}/runtimes/win-x64/native
+          mv ${{github.workspace}}/native/win.x64.ziti4dotnet.dll ${{github.workspace}}/runtimes/win-x64/native/ziti4dotnet.dll
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: 5.0.x
-      - name: ll folder
-        run: ls ${{ github.workspace }}/*pa*
+      - name: find all the libs again
+        run: find ${{ github.workspace }} -name "*ziti4dotnet*"
       - name: Create the Nuget package
         run: nuget pack -version 1.2.3 ${{ github.workspace }}/native-package.nuspec
       - name: upload nuget package
