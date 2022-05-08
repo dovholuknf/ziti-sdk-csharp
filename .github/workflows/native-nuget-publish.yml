@@ -80,6 +80,8 @@ jobs:
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: 5.0.x
+      - name: find native-package.nuspec
+        run: find ${{ github.workspace }} -name native-package.nuspec
       - name: Create the Nuget package
         run: nuget pack -version 1.2.3 ${{ github.workspace }}/native-package.nuspec
       - name: upload nuget package
