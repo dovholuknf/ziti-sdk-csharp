@@ -81,7 +81,7 @@ jobs:
         with:
           dotnet-version: 5.0.x
       - name: Create the Nuget package
-        run: nuget pack -version 1.2.3
+        run: nuget pack -version 1.2.3 ${{runner.workspace}}/native-package.nuspec
       - name: upload nuget package
         uses: actions/upload-artifact@v3
         with:
