@@ -85,6 +85,6 @@ jobs:
       - name: upload nuget package
         uses: actions/upload-artifact@v3
         with:
-          path: ${{runner.workspace}}/Ziti.NET.Standard.native.1.2.3.nupkg
+          path: ${{ github.workspace }}/Ziti.NET.Standard.native.1.2.3.nupkg
           if-no-files-found: error
       
