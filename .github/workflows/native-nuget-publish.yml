@@ -47,10 +47,10 @@ jobs:
           fetch-depth: 0
       - name: setup/build CMake
         run: |
-          echo "build number = ${BUILD_NUMBER}"
-          cmake -E make_directory ${TARGETDIR}
-          cmake -S ${BASEDIR} -B ${TARGETDIR}
-          cmake --build ${TARGETDIR} --config Release
+          echo "build number = ${{ env.BUILD_NUMBER }}"
+          cmake -E make_directory ${{ env.TARGETDIR }}
+          cmake -S ${{ env.BASEDIR }} -B ${{ env.TARGETDIR }}
+          cmake --build ${{ env.TARGETDIR }} --config Release
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -84,7 +84,7 @@ jobs:
         with:
           dotnet-version: 5.0.x
       - name: Create the Nuget package
-        run: nuget pack -version 1.2.3.${BUILD_NUMBER} ${{ github.workspace }}/native-package.nuspec
+        run: nuget pack -version 1.2.3.${{ env.BUILD_NUMBER }} ${{ github.workspace }}/native-package.nuspec
       - name: upload nuget package
         uses: actions/upload-artifact@v3
         with:
