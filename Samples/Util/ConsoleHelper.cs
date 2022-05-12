@@ -12,6 +12,7 @@ namespace OpenZiti.Samples
         private const uint ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x0004;
         private const uint DISABLE_NEWLINE_AUTO_RETURN = 0x0008;
 
+// the below block is available only in windows, so the if condition should actually check for the windows platform
 #if ZITI_X86
         [DllImport("kernel32.dll")]
         private static extern bool GetConsoleMode(IntPtr hConsoleHandle, out uint lpMode);

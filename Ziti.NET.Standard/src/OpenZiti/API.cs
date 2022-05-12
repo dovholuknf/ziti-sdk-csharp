@@ -401,5 +401,22 @@ namespace OpenZiti {
         internal uint key_hash;
         internal IntPtr value;
     }
+    public struct model_map_entry_x64
+    {
+        internal IntPtr key;
+        internal UInt64 key_len;
+        internal uint key_hash;
+        internal IntPtr value;
+        internal model_map_entry ConvertToBaseModel()
+        {
+            return new model_map_entry()
+            {
+                key = this.key,
+                key_len = (int)this.key_len,
+                key_hash = this.key_hash,
+                value = this.value
+            };
+        }
+    }
 
 }
