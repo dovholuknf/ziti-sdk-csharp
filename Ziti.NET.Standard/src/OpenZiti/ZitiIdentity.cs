@@ -155,7 +155,7 @@ namespace OpenZiti {
 			if (this.IsRunning) {
 				throw new System.InvalidOperationException("The identity is already running");
 			}
-			
+
 			new Thread(() => Native.API.z4d_uv_run(Loop.nativeUvLoop)).Start();
 			await runlock.WaitAsync().ConfigureAwait(false);
 			GC.KeepAlive(zitiOptions);
@@ -164,12 +164,13 @@ namespace OpenZiti {
 		public ZitiOptions Configure(int refreshInterval) {
 			Native.API.ziti_log_init(Loop.nativeUvLoop, 11, Marshal.GetFunctionPointerForDelegate(API.NativeLogger));
 			IntPtr cfgs = Native.NativeHelperFunctions.ToPtr(InitOpts.ConfigurationTypes);
+			// fix value assignment of refreshInterval
 
 			Native.ziti_options ziti_opts = new Native.ziti_options {
 				//app_ctx = GCHandle.Alloc(InitOpts.ApplicationContext, GCHandleType.Pinned),
 				config = InitOpts.IdentityFile,
 				config_types = cfgs,
-				refresh_interval = refreshInterval,
+				refresh_interval = 15,
 				metrics_type = InitOpts.MetricType,
 				pq_mac_cb = native_ziti_pq_mac_cb,
 				events = InitOpts.EventFlags,
@@ -207,12 +208,20 @@ namespace OpenZiti {
 				case ZitiEventFlags.ZitiContextEvent:
 					NativeContext = ziti_context;
 					WrappedContext = new ZitiContext(ziti_context);
-					
-					Native.ziti_context_event ziti_context_event = Marshal.PtrToStructure<Native.ziti_context_event>(ziti_event_t);
+					Native.ziti_context_event ziti_context_event;
+					if (OpenZiti.GlobalConstants.X64)
+					{
+						ziti_context_event = Marshal.PtrToStructure<Native.ziti_context_event_x64>(ziti_event_t);
+					}
+					else
+					{
+						ziti_context_event = Marshal.PtrToStructure<Native.ziti_context_event_x86>(ziti_event_t);
+					}
+
 					var vptr = Native.API.ziti_get_controller_version(ziti_context);
 					ziti_version v = Marshal.PtrToStructure<ziti_version>(vptr);
 					IntPtr ptr = Native.API.ziti_get_controller(ziti_context);
-					string ztapi = Marshal.PtrToStringUTF8(ptr);
+					string ztapi = marshallPointerToString(ptr);
 					var idPtr = Native.API.ziti_get_identity(ziti_context);
 					string name = null;
 					if (idPtr != IntPtr.Zero)
@@ -225,11 +234,15 @@ namespace OpenZiti {
 					ZitiContextEvent evt = new ZitiContextEvent() {
 						Name = name,
 						ZTAPI = ztapi,
-						Status = (ZitiStatus) ziti_context_event.ctrl_status,
-						StatusError = Marshal.PtrToStringUTF8(ziti_context_event.err),
+						Status = (ZitiStatus)ziti_context_event.GetCtrlStatus(),
 						Version = v,
 						Identity = this,
 					};
+					if (ziti_context_event.GetErr() != IntPtr.Zero)
+					{
+						evt.StatusError = marshallPointerToString(ziti_context_event.GetErr());
+					}
+
 					InitOpts.ZitiContextEvent(evt);
 
 					lock (this) {
@@ -239,22 +252,38 @@ namespace OpenZiti {
 
 					break;
 				case ZitiEventFlags.ZitiRouterEvent:
-					Native.ziti_router_event ziti_router_event = Marshal.PtrToStructure<Native.ziti_router_event>(ziti_event_t);
+					Native.ziti_router_event ziti_router_event;
+					if (OpenZiti.GlobalConstants.X64)
+					{
+						ziti_router_event = Marshal.PtrToStructure<Native.ziti_router_event_x64>(ziti_event_t);
+					}
+					else
+					{
+						ziti_router_event = Marshal.PtrToStructure<Native.ziti_router_event_x86>(ziti_event_t);
+					}
 
 					ZitiRouterEvent routerEvent = new ZitiRouterEvent() {
-						Name = Marshal.PtrToStringUTF8(ziti_router_event.name),
-						Type = (RouterEventType) ziti_router_event.status,
-						Version = Marshal.PtrToStringUTF8(ziti_router_event.version),
+						Name = Marshal.PtrToStringUTF8(ziti_router_event.GetName()),
+						Type = (RouterEventType) ziti_router_event.GetStatus(),
+						Version = Marshal.PtrToStringUTF8(ziti_router_event.GetVersion()),
 					};
 					InitOpts.ZitiRouterEvent(routerEvent);
 					break;
 				case ZitiEventFlags.ZitiServiceEvent:
-					Native.ziti_service_event ziti_service_event = Marshal.PtrToStructure<Native.ziti_service_event>(ziti_event_t);
+					Native.ziti_service_event ziti_service_event;
+					if (OpenZiti.GlobalConstants.X64)
+					{
+						ziti_service_event = Marshal.PtrToStructure<Native.ziti_service_event_x64>(ziti_event_t);
+					}
+					else
+					{
+						ziti_service_event = Marshal.PtrToStructure<Native.ziti_service_event_x86>(ziti_event_t);
+					}
 
 					ZitiServiceEvent serviceEvent = new ZitiServiceEvent(ziti_context) {
-						nativeRemovedList = ziti_service_event.removed,
-						nativeChangedList = ziti_service_event.changed,
-						nativeAddedList = ziti_service_event.added,
+						nativeRemovedList = ziti_service_event.GetRemoved(),
+						nativeChangedList = ziti_service_event.GetChanged(),
+						nativeAddedList = ziti_service_event.GetAdded(),
 						Context = this.ApplicationContext,
 						id = this,
 					};
@@ -287,9 +316,17 @@ namespace OpenZiti {
 					InitOpts.ZitiMFAEvent(zitiMFAEvent);
 					break;
 				case ZitiEventFlags.ZitiAPIEvent:
-					Native.ziti_api_event ziti_api_event = Marshal.PtrToStructure<Native.ziti_api_event>(ziti_event_t);
+					Native.ziti_api_event ziti_api_event;
+					if (OpenZiti.GlobalConstants.X64)
+					{
+						ziti_api_event = Marshal.PtrToStructure<Native.ziti_api_event_x64>(ziti_event_t);
+					}
+					else
+					{
+						ziti_api_event = Marshal.PtrToStructure<Native.ziti_api_event_x86>(ziti_event_t);
+					}
 
-					if (ziti_api_event.new_ctrl_address == IntPtr.Zero)
+					if (ziti_api_event.GetNewCtrlAddress() == IntPtr.Zero)
 					{
 						Logger.Info("Ziti identifier received incorrect API event with null controller address");
 						break;
@@ -298,7 +335,7 @@ namespace OpenZiti {
 					ZitiAPIEvent zitiAPIEvent = new ZitiAPIEvent()
 					{
 						id = this,
-						newCtrlAddress = Marshal.PtrToStringUTF8(ziti_api_event.new_ctrl_address),
+						newCtrlAddress = Marshal.PtrToStringUTF8(ziti_api_event.GetNewCtrlAddress()),
 					};
 
 					Task.Run(() => {
@@ -503,6 +540,20 @@ namespace OpenZiti {
 		}
 		public void ZitiDumpToFile(string fileName) {
 			OpenZiti.Native.NativeHelperFunctions.z4d_ziti_dump_file(this.WrappedContext.nativeZitiContext, fileName);
+		}
+
+		private string marshallPointerToString(IntPtr ptr)
+		{
+			string response;
+			if (OpenZiti.GlobalConstants.X64)
+			{
+				response = Marshal.PtrToStringAuto(ptr);
+			}
+			else
+			{
+				response = Marshal.PtrToStringUTF8(ptr);
+			}
+			return response;
 		}
 	}
 	public struct TransferMetrics {

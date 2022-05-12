@@ -58,4 +58,11 @@ namespace OpenZiti
             return null;
         }
     }
+
+    public static class GlobalConstants
+    {
+        public static bool X86 => "X86".Equals(RuntimeInformation.ProcessArchitecture.ToString());
+        public static bool X64 => "X64".Equals(RuntimeInformation.ProcessArchitecture.ToString());
+
+    }
 }

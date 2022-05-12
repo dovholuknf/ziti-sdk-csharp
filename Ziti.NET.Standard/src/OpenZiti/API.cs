@@ -252,9 +252,10 @@ namespace OpenZiti {
     class StructWrapper : IDisposable {
         public IntPtr Ptr { get; private set; }
 
-        public StructWrapper(object obj) {
-	        Ptr = Marshal.AllocHGlobal(Marshal.SizeOf(obj));
-	        Marshal.StructureToPtr(obj, Ptr, false);
+        public StructWrapper(object obj)
+        {
+            Ptr = Marshal.AllocHGlobal(Marshal.SizeOf(obj));
+            Marshal.StructureToPtr(obj, Ptr, false);
         }
 
         ~StructWrapper() {
@@ -357,9 +358,12 @@ namespace OpenZiti {
         public string updated_at;
     }
 
+    [StructLayout(LayoutKind.Sequential)]
     public struct posture_query_set {
+        [MarshalAs(UnmanagedType.LPUTF8Str)]
         public string policy_id;
         public bool is_passing;
+        [MarshalAs(UnmanagedType.LPUTF8Str)]
         public string policy_type;
         public IntPtr /** posture_query[] **/ posture_queries;
     }
@@ -368,7 +372,10 @@ namespace OpenZiti {
         public bool is_passing;
         public string query_type;
         public IntPtr /** ziti_process **/ process;
+        public IntPtr /** ziti_process_arr **/ processes;
         public int timeout;
+        public int timeoutRemaining;
+        public string updated_at;
     }
 
     public struct ziti_process {

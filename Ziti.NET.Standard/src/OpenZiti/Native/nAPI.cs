@@ -291,7 +291,12 @@ namespace OpenZiti.Native {
 
         public Int32 api_page_size;
 
+
+#if ZITI_X64
+        public UInt64 refresh_interval;
+#else
         public Int32 refresh_interval; //the duration in seconds between checking for updates from the controller
+#endif
         public RateType metrics_type; //an enum describing the metrics to collect
 
         public Int32 router_keepalive;
@@ -323,68 +328,181 @@ namespace OpenZiti.Native {
 
     }
 
+    interface ziti_context_event {
+        public int GetEventType();
+        public int GetCtrlStatus();
+        public IntPtr GetErr();
+    }
     [StructLayout(LayoutKind.Explicit)]
-    struct ziti_context_event {
+    struct ziti_context_event_x86 : ziti_context_event
+    {
 	    [FieldOffset(0)]
         public int type;
-#if ZITI_X64
-        [FieldOffset(8)]
-#else
 	    [FieldOffset(4)]
-#endif
         public int ctrl_status;
-#if ZITI_X64
-        [FieldOffset(16)]
-#else
 	    [FieldOffset(8)]
-#endif
         public IntPtr err;
+        public int GetEventType()
+        {
+            return type;
+        }
+        public int GetCtrlStatus()
+        {
+            return ctrl_status;
+        }
+        public IntPtr GetErr()
+        {
+            return err;
+        }
     };
     [StructLayout(LayoutKind.Explicit)]
-    struct ziti_router_event {
-	    [FieldOffset(0)]
+    struct ziti_context_event_x64 : ziti_context_event
+    {
+        [FieldOffset(0)]
         public int type;
-#if ZITI_X64 
         [FieldOffset(8)]
-#else
-	    [FieldOffset(4)]
-#endif
-        public int status;
-#if ZITI_X64
-	    [FieldOffset(16)]
-#else
-	    [FieldOffset(8)]
-#endif
-	    public IntPtr name;
-#if ZITI_X64
-        [FieldOffset(24)]
-#else
-	    [FieldOffset(12)]
-#endif
-        public IntPtr version;
-    };
-    [StructLayout(LayoutKind.Explicit)]
-    struct ziti_service_event {
-	    [FieldOffset(0)]
-        public int type;
-#if ZITI_X64
-        [FieldOffset(8)]
-#else
-	    [FieldOffset(4)]
-#endif
-        public IntPtr removed;
-#if ZITI_X64
+        public int ctrl_status;
         [FieldOffset(16)]
-#else
+        public IntPtr err;
+        public int GetEventType()
+        {
+            return type;
+        }
+        public int GetCtrlStatus()
+        {
+            return ctrl_status;
+        }
+        public IntPtr GetErr()
+        {
+            return err;
+        }
+    };
+
+    interface ziti_router_event
+    {
+        public int GetEventType();
+        public int GetStatus();
+        public IntPtr GetName();
+        public IntPtr GetVersion();
+    }
+    [StructLayout(LayoutKind.Explicit)]
+    struct ziti_router_event_x86 : ziti_router_event
+    {
+	    [FieldOffset(0)]
+        public int type;
+	    [FieldOffset(4)]
+        public int status;
 	    [FieldOffset(8)]
-#endif
-        public IntPtr changed;
-#if ZITI_X64
-        [FieldOffset(24)]
-#else
+	    public IntPtr name;
 	    [FieldOffset(12)]
-#endif
+        public IntPtr version;
+        public int GetEventType()
+        {
+            return type;
+        }
+        public int GetStatus()
+        {
+            return status;
+        }
+        public IntPtr GetName()
+        {
+            return name;
+        }
+        public IntPtr GetVersion()
+        {
+            return version;
+        }
+    };
+    [StructLayout(LayoutKind.Explicit)]
+    struct ziti_router_event_x64 : ziti_router_event
+    {
+        [FieldOffset(0)]
+        public int type;
+        [FieldOffset(8)]
+        public int status;
+	    [FieldOffset(16)]
+        public IntPtr name;
+        [FieldOffset(24)]
+        public IntPtr version;
+        public int GetEventType()
+        {
+            return type;
+        }
+        public int GetStatus()
+        {
+            return status;
+        }
+        public IntPtr GetName()
+        {
+            return name;
+        }
+        public IntPtr GetVersion()
+        {
+            return version;
+        }
+    };
+
+    interface ziti_service_event {
+        public int GetEventType();
+        public IntPtr GetRemoved();
+        public IntPtr GetChanged();
+        public IntPtr GetAdded();
+    }
+    [StructLayout(LayoutKind.Explicit)]
+    struct ziti_service_event_x86 : ziti_service_event
+    {
+	    [FieldOffset(0)]
+        public int type;
+	    [FieldOffset(4)]
+        public IntPtr removed;
+	    [FieldOffset(8)]
+        public IntPtr changed;
+	    [FieldOffset(12)]
         public IntPtr added;
+        public int GetEventType()
+        {
+            return type;
+        }
+        public IntPtr GetRemoved()
+        {
+            return removed;
+        }
+        public IntPtr GetChanged()
+        {
+            return changed;
+        }
+        public IntPtr GetAdded()
+        {
+            return added;
+        }
+    };
+    [StructLayout(LayoutKind.Explicit)]
+    struct ziti_service_event_x64 : ziti_service_event
+    {
+        [FieldOffset(0)]
+        public int type;
+        [FieldOffset(8)]
+        public IntPtr removed;
+        [FieldOffset(16)]
+        public IntPtr changed;
+        [FieldOffset(24)]
+        public IntPtr added;
+        public int GetEventType()
+        {
+            return type;
+        }
+        public IntPtr GetRemoved()
+        {
+            return removed;
+        }
+        public IntPtr GetChanged()
+        {
+            return changed;
+        }
+        public IntPtr GetAdded()
+        {
+            return added;
+        }
     };
 
     [StructLayout(LayoutKind.Explicit)]
@@ -394,18 +512,41 @@ namespace OpenZiti.Native {
         public int type;
     };
 
-
+    interface ziti_api_event {
+        public int GetEventType();
+        public IntPtr GetNewCtrlAddress();
+    }
     [StructLayout(LayoutKind.Explicit)]
-    struct ziti_api_event
+    struct ziti_api_event_x86 : ziti_api_event
     {
         [FieldOffset(0)]
         public int type;
-#if ZITI_X64
-        [FieldOffset(8)]
-#else
         [FieldOffset(4)]
-#endif
         public IntPtr new_ctrl_address;
+        public int GetEventType()
+        {
+            return type;
+        }
+        public IntPtr GetNewCtrlAddress()
+        {
+            return new_ctrl_address;
+        }
+    };
+    [StructLayout(LayoutKind.Explicit)]
+    struct ziti_api_event_x64 : ziti_api_event
+    {
+        [FieldOffset(0)]
+        public int type;
+        [FieldOffset(8)]
+        public IntPtr new_ctrl_address;
+        public int GetEventType()
+        {
+            return type;
+        }
+        public IntPtr GetNewCtrlAddress()
+        {
+            return new_ctrl_address;
+        }
     };
 
 #pragma warning restore 0649
