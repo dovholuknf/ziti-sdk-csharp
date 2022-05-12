@@ -10,14 +10,15 @@ fi
 
 echo "================ZITI_SDK_C_BRANCH_CMD: $ZITI_SDK_C_BRANCH_CMD"
 
-CSDK_HOME=$(dirname $0)
+# CSDK_HOME=$(dirname $0)
+CSDK_HOME=$PWD
 
 BUILDFOLDER="$CSDK_HOME/build-win"
 
 mkdir $BUILDFOLDER 2> /dev/null
-mkdir "$BUILDFOLDER/darwin" 2> /dev/null
+mkdir "$BUILDFOLDER/osx-x64" 2> /dev/null
 
-cmake -S $CSDK_HOME -B "$BUILDFOLDER/darwin" -G "Ninja" -DCMAKE_INSTALL_INCLUDEDIR=include -DCMAKE_INSTALL_LIBDIR=lib $ZITI_SDK_C_BRANCH_CMD
+cmake -S $CSDK_HOME -B "$BUILDFOLDER/osx-x64" -G "Ninja Multi-Config" -DCMAKE_INSTALL_INCLUDEDIR=include -DCMAKE_INSTALL_LIBDIR=lib $ZITI_SDK_C_BRANCH_CMD
 
 # run the below commands from microsoft developer command prompt
 # uncomment to generate a new ziti.def
@@ -27,10 +28,10 @@ cmake -S $CSDK_HOME -B "$BUILDFOLDER/darwin" -G "Ninja" -DCMAKE_INSTALL_INCLUDED
 # copy library/ZitiStatus.cs ../Ziti.NET.Standard/src/OpenZiti 
 
 echo "Build from cmake using: "
-echo "    cmake --build $BUILDFOLDER/darwin --config Debug"
-cmake --build "$BUILDFOLDER/darwin" --config Debug
-echo "    cmake --build $BUILDFOLDER/darwin --config Release"
-cmake --build "$BUILDFOLDER/darwin" --config Release
+echo "    cmake --build $BUILDFOLDER/osx-x64 --config Debug"
+cmake --build "$BUILDFOLDER/osx-x64" --config Debug
+echo "    cmake --build $BUILDFOLDER/osx-x64 --config Release"
+cmake --build "$BUILDFOLDER/osx-x64" --config Release
 echo " " 
 echo "Or open $BUILDFOLDER/ziti-sdk.sln"
 
