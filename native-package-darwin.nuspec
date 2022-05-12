@@ -16,6 +16,6 @@
         <description>This nuget package contains native libraries compiled for the targeted platforms. Initially this includes window x86 and x64. Eventually it may include libraries for MacOS/iOS/linux</description>
     </metadata>
     <files>
-        <file src="ZitiNativeApiForDotnetCore/build-win/darwin/library/libziti4dotnet.dylib" target="runtimes/darwin/native" />
+        <file src="ZitiNativeApiForDotnetCore/build-win/osx-x64/library/Release/libziti4dotnet.dylib" target="runtimes/osx-x64/native" />
     </files>
 </package>
