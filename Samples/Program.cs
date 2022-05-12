@@ -47,6 +47,7 @@ namespace OpenZiti.Samples {
             } catch (Exception e) {
                 Console.WriteLine("==============================================================");
                 Console.WriteLine("Sample failed to execute: " + e.Message);
+                Console.WriteLine("Exception from native library: " + e.InnerException);
                 Console.WriteLine("==============================================================");
             }
         }
