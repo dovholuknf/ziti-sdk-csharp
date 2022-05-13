@@ -152,3 +152,7 @@ void z4d_ziti_dump_file(ziti_context ztx, const char* outputFile) {
     fflush(fp);
     fclose(fp);
 }
+
+int z4d_ziti_enroll(ziti_enroll_opts *opts, uv_loop_t *loop, ziti_enroll_cb enroll_cb, void *enroll_ctx) {
+    return ziti_enroll(opts, loop, enroll_cb, enroll_ctx);
+}

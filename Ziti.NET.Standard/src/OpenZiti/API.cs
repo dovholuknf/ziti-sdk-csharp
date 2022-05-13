@@ -147,7 +147,7 @@ namespace OpenZiti {
                 Context = ctx,
             };
 
-            Native.API.ziti_enroll(w.wrapper.Ptr, loop.nativeUvLoop, enroll_cb, GCHandle.Alloc(w));
+            Native.API.z4d_ziti_enroll(w.wrapper.Ptr, loop.nativeUvLoop, enroll_cb, GCHandle.Alloc(w));
         }
 
         public static UVLoop NewLoop() {

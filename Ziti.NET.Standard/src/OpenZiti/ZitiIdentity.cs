@@ -166,28 +166,55 @@ namespace OpenZiti {
 			IntPtr cfgs = Native.NativeHelperFunctions.ToPtr(InitOpts.ConfigurationTypes);
 			// fix value assignment of refreshInterval
 
-			Native.ziti_options ziti_opts = new Native.ziti_options {
-				//app_ctx = GCHandle.Alloc(InitOpts.ApplicationContext, GCHandleType.Pinned),
-				config = InitOpts.IdentityFile,
-				config_types = cfgs,
-				refresh_interval = 15,
-				metrics_type = InitOpts.MetricType,
-				pq_mac_cb = native_ziti_pq_mac_cb,
-				events = InitOpts.EventFlags,
-				event_cb = ziti_event_cb,
-			};
 			ApplicationContext = InitOpts.ApplicationContext;
 
 			InitOpts.OnZitiContextEvent += SaveNativeContext;
-			StructWrapper ziti_opts_ptr = new StructWrapper(ziti_opts);
 
-			int result = Native.API.ziti_init_opts(ziti_opts_ptr.Ptr, Loop.nativeUvLoop);
+			ZitiOptions zitiOptions = new ZitiOptions();
+			int result;
+			if (OpenZiti.GlobalConstants.X86)
+            {
+				Native.ziti_options_x86 ziti_opts = new Native.ziti_options_x86
+				{
+					//app_ctx = GCHandle.Alloc(InitOpts.ApplicationContext, GCHandleType.Pinned),
+					config = InitOpts.IdentityFile,
+					config_types = cfgs,
+					refresh_interval = refreshInterval,
+					metrics_type = InitOpts.MetricType,
+					pq_mac_cb = native_ziti_pq_mac_cb,
+					events = InitOpts.EventFlags,
+					event_cb = ziti_event_cb,
+				};
+
+				StructWrapper ziti_opts_ptr = new StructWrapper(ziti_opts);
+
+				result = Native.API.ziti_init_opts(ziti_opts_ptr.Ptr, Loop.nativeUvLoop);
+				zitiOptions.NativeZitiOptionsX86 = ziti_opts;
+			} else
+            {
+				Native.ziti_options_x64 ziti_opts_x64 = new Native.ziti_options_x64
+				{
+					//app_ctx = GCHandle.Alloc(InitOpts.ApplicationContext, GCHandleType.Pinned),
+					config = InitOpts.IdentityFile,
+					config_types = cfgs,
+					refresh_interval = (ulong)refreshInterval,
+					metrics_type = InitOpts.MetricType,
+					pq_mac_cb = native_ziti_pq_mac_cb,
+					events = InitOpts.EventFlags,
+					event_cb = ziti_event_cb,
+				};
+
+				StructWrapper ziti_opts_ptr = new StructWrapper(ziti_opts_x64);
+
+				result = Native.API.ziti_init_opts(ziti_opts_ptr.Ptr, Loop.nativeUvLoop);
+				zitiOptions.NativeZitiOptionsX64 = ziti_opts_x64;
+
+			}
+
 			if (result != 0) {
 				throw new ZitiException("Could not initialize the connection using the given ziti options.");
 			}
-			return new ZitiOptions() {
-				NativeZitiOptions = ziti_opts
-			};
+			return zitiOptions;
 		}
 
 		public void Shutdown() {
@@ -670,6 +697,8 @@ namespace OpenZiti {
 	}
 
 	public struct ZitiOptions {
-		internal Native.ziti_options NativeZitiOptions;
-    }
+		internal Native.ziti_options_x86 NativeZitiOptionsX86;
+		internal Native.ziti_options_x64 NativeZitiOptionsX64;
+
+}
 }

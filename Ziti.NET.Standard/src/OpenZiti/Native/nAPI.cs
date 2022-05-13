@@ -93,8 +93,8 @@ namespace OpenZiti.Native {
 
         //these functions should be declared in the same order as they appear in ziti.h to make diffing easier!
         //defined in C: extern int ziti_enroll(ziti_enroll_opts *opts, uv_loop_t *loop, ziti_enroll_cb enroll_cb, void *enroll_ctx);
-        [DllImport(Z4D_DLL_PATH, EntryPoint = "ziti_enroll")]
-        public static extern int ziti_enroll(IntPtr /*ziti_enroll_options*/ opts, IntPtr loop, ziti_enroll_cb enroll_cb, GCHandle enroll_context);
+        [DllImport(Z4D_DLL_PATH, EntryPoint = "z4d_ziti_enroll")]
+        public static extern int z4d_ziti_enroll(IntPtr /*ziti_enroll_options*/ opts, IntPtr loop, ziti_enroll_cb enroll_cb, GCHandle enroll_context);
 
         [DllImport(Z4D_DLL_PATH, EntryPoint = "ziti_log_init", CallingConvention = CALL_CONVENTION)]
         public static extern void ziti_log_init(IntPtr loop, int level, IntPtr/*log_writer*/ logger);
@@ -275,7 +275,7 @@ namespace OpenZiti.Native {
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct ziti_options {
+    public struct ziti_options_x86 {
         [MarshalAs(UnmanagedType.LPUTF8Str)]
         public string config;
 
@@ -291,12 +291,8 @@ namespace OpenZiti.Native {
 
         public Int32 api_page_size;
 
-
-#if ZITI_X64
-        public UInt64 refresh_interval;
-#else
         public Int32 refresh_interval; //the duration in seconds between checking for updates from the controller
-#endif
+
         public RateType metrics_type; //an enum describing the metrics to collect
 
         public Int32 router_keepalive;
@@ -312,6 +308,44 @@ namespace OpenZiti.Native {
         public uint events;
 
         public ziti_event_cb event_cb;
+    };
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ziti_options_x64
+    {
+        [MarshalAs(UnmanagedType.LPUTF8Str)]
+        public string config;
+
+        [MarshalAs(UnmanagedType.LPUTF8Str)]
+        public string controller;
+
+        public IntPtr tls;
+
+        public bool disabled;
+
+        //public IntPtr config_types;
+        public IntPtr /*public char**/ config_types;
+
+        public Int32 api_page_size;
+
+        public UInt64 refresh_interval;
+
+        public RateType metrics_type; //an enum describing the metrics to collect
+
+        public Int32 router_keepalive;
+
+        //posture query cbs
+        public ziti_pq_mac_cb pq_mac_cb;
+        public ziti_pq_os_cb pq_os_cb;
+        public ziti_pq_process_cb pq_process_cb;
+        public ziti_pq_domain_cb pq_domain_cb;
+
+        public GCHandle app_ctx;
+
+        public uint events;
+
+        public ziti_event_cb event_cb;
+
     };
 
     [StructLayout(LayoutKind.Sequential)]

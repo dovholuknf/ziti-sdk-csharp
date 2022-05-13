@@ -36,6 +36,7 @@ Z4D_API void free_char_array(char **a, int size);
 
 Z4D_API void z4d_ziti_dump_log(ziti_context ztx);
 Z4D_API void z4d_ziti_dump_file(ziti_context ztx, const char* outputFile);
+Z4D_API int z4d_ziti_enroll(ziti_enroll_opts *opts, uv_loop_t *loop, ziti_enroll_cb enroll_cb, void *enroll_ctx);
 
 #ifdef __cplusplus
 }
