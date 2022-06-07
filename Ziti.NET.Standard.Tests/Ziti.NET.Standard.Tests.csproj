@@ -44,7 +44,7 @@
     </None>
   </ItemGroup>
 
-    <Target Name="NSwag" AfterTargets="BeforeBuild">
+    <Target Name="NSwag">
         <Message Importance="high" Text="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"/>
         <Message Importance="high" Text="+                                                                                               +"/>
         <Message Importance="high" Text="+ GENERATING OpenAPI client using NSwag BeforeBuild. see csproj files, target NSwag for details +"/>
