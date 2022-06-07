@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <OpenApiReference Include="management.yaml" CodeGenerator="NSwagCSharp" Namespace="OpenZiti.Management" ClassName="ManagementClient" />
+    <!--OpenApiReference Include="management.yaml" CodeGenerator="NSwagCSharp" Namespace="OpenZiti.Management" ClassName="ManagementClient" /-->
   </ItemGroup>
 
   <ItemGroup>
@@ -44,4 +44,13 @@
     </None>
   </ItemGroup>
 
+    <Target Name="NSwag" AfterTargets="BeforeBuild">
+        <Message Importance="high" Text="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"/>
+        <Message Importance="high" Text="+                                                                                               +"/>
+        <Message Importance="high" Text="+ GENERATING OpenAPI client using NSwag BeforeBuild. see csproj files, target NSwag for details +"/>
+        <Message Importance="high" Text="+                                                                                               +"/>
+        <Message Importance="high" Text="+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"/>
+        <!--Exec EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe) aspnetcore2openapi /assembly:$(TargetDir)MyWebAssembly.dll /output:swagger.json" /-->
+        <Exec Command="$(NSwagExe) openapi2csclient /input:management.yaml /output:management.cs /namespace:OpenZiti.Management /classname:ManagementClient" />
+    </Target>
 </Project>
