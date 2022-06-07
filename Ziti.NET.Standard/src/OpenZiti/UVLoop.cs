@@ -27,5 +27,9 @@ namespace OpenZiti {
         internal UVLoop(IntPtr nativeLoop) {
             this.nativeUvLoop = nativeLoop;
         }
+
+        public void Run() {
+	        Native.API.z4d_uv_run(nativeUvLoop);
+        }
     }
 }

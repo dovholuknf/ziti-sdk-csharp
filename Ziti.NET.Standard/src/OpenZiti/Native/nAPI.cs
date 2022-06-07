@@ -86,7 +86,7 @@ namespace OpenZiti.Native {
     [UnmanagedFunctionPointer(API.CALL_CONVENTION)] public delegate void uv_close_cb(IntPtr handle);
 
 
-    public class API {
+    public partial class API {
         public const CallingConvention CALL_CONVENTION = CallingConvention.Cdecl;
 
         public const string Z4D_DLL_PATH = @"ziti4dotnet";

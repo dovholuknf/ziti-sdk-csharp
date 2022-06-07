@@ -26,6 +26,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\native-nuget-publish.yml = .github\workflows\native-nuget-publish.yml
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ziti.NET.Standard.Tests", "Ziti.NET.Standard.Tests\Ziti.NET.Standard.Tests.csproj", "{DB13FDE1-317C-40C3-8D12-3B551C303AC0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,30 @@ Global
 		{A708ABEB-3393-4E31-9883-D7E7BAE322A1}.Release|LocalTestx86.Build.0 = Release|Any CPU
 		{A708ABEB-3393-4E31-9883-D7E7BAE322A1}.Release|x64.ActiveCfg = Release|x64
 		{A708ABEB-3393-4E31-9883-D7E7BAE322A1}.Release|x86.ActiveCfg = Release|x86
+		{DB13FDE1-317C-40C3-8D12-3B551C303AC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB13FDE1-317C-40C3-8D12-3B551C303AC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB13FDE1-317C-40C3-8D12-3B551C303AC0}.Debug|LocalTest.ActiveCfg = Debug|Any CPU
+		{DB13FDE1-317C-40C3-8D12-3B551C303AC0}.Debug|LocalTest.Build.0 = Debug|Any CPU
+		{DB13FDE1-317C-40C3-8D12-3B551C303AC0}.Debug|LocalTestx64.ActiveCfg = Debug|Any CPU
+		{DB13FDE1-317C-40C3-8D12-3B551C303AC0}.Debug|LocalTestx64.Build.0 = Debug|Any CPU
+		{DB13FDE1-317C-40C3-8D12-3B551C303AC0}.Debug|LocalTestx86.ActiveCfg = Debug|Any CPU
+		{DB13FDE1-317C-40C3-8D12-3B551C303AC0}.Debug|LocalTestx86.Build.0 = Debug|Any CPU
+		{DB13FDE1-317C-40C3-8D12-3B551C303AC0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DB13FDE1-317C-40C3-8D12-3B551C303AC0}.Debug|x64.Build.0 = Debug|Any CPU
+		{DB13FDE1-317C-40C3-8D12-3B551C303AC0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DB13FDE1-317C-40C3-8D12-3B551C303AC0}.Debug|x86.Build.0 = Debug|Any CPU
+		{DB13FDE1-317C-40C3-8D12-3B551C303AC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB13FDE1-317C-40C3-8D12-3B551C303AC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB13FDE1-317C-40C3-8D12-3B551C303AC0}.Release|LocalTest.ActiveCfg = Release|Any CPU
+		{DB13FDE1-317C-40C3-8D12-3B551C303AC0}.Release|LocalTest.Build.0 = Release|Any CPU
+		{DB13FDE1-317C-40C3-8D12-3B551C303AC0}.Release|LocalTestx64.ActiveCfg = Release|Any CPU
+		{DB13FDE1-317C-40C3-8D12-3B551C303AC0}.Release|LocalTestx64.Build.0 = Release|Any CPU
+		{DB13FDE1-317C-40C3-8D12-3B551C303AC0}.Release|LocalTestx86.ActiveCfg = Release|Any CPU
+		{DB13FDE1-317C-40C3-8D12-3B551C303AC0}.Release|LocalTestx86.Build.0 = Release|Any CPU
+		{DB13FDE1-317C-40C3-8D12-3B551C303AC0}.Release|x64.ActiveCfg = Release|Any CPU
+		{DB13FDE1-317C-40C3-8D12-3B551C303AC0}.Release|x64.Build.0 = Release|Any CPU
+		{DB13FDE1-317C-40C3-8D12-3B551C303AC0}.Release|x86.ActiveCfg = Release|Any CPU
+		{DB13FDE1-317C-40C3-8D12-3B551C303AC0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

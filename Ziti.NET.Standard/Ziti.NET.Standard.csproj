@@ -36,9 +36,9 @@
 
     <ItemGroup>
         <PackageReference Include="NLog" Version="4.7.15" />
-        <PackageReference Include="System.Memory" Version="4.5.4" />
+        <PackageReference Include="System.Memory" Version="4.5.5" />
         <PackageReference Include="System.Text.Json" Version="6.0.4" />
-        <PackageReference Include="Ziti.NET.Standard.native" Version="0.28.1.76" />
+        <PackageReference Include="Ziti.NET.Standard.native" Version="0.28.4.96" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     </ItemGroup>
 

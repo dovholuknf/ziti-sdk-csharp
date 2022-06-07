@@ -133,9 +133,13 @@ namespace OpenZiti {
         static Native.ziti_enroll_cb enroll_cb = Enrollment.ziti_enroll_cb_impl;
 
         public static void Enroll(string identityFile, Enrollment.AfterEnroll afterEnroll, object ctx) {
-            var loop = API.DefaultLoop;
-            Native.API.ziti_log_init(loop.nativeUvLoop, 11, Marshal.GetFunctionPointerForDelegate(NativeLogger));
+	        var loop = API.NewLoop();
+	        Enroll(loop, identityFile, afterEnroll, ctx);
+	        loop.Run();
+        }
 
+        public static void Enroll(UVLoop loop, string identityFile, Enrollment.AfterEnroll afterEnroll, object ctx) {
+            Native.API.ziti_log_init(loop.nativeUvLoop, 11, Marshal.GetFunctionPointerForDelegate(NativeLogger));
 
             Native.ziti_enroll_options opts = new Native.ziti_enroll_options() {
                 jwt = identityFile,
