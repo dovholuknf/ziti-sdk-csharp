@@ -11,7 +11,7 @@
         <SecondsOfDay>$([MSBuild]::Divide($([System.DateTime]::get_Now().get_TimeOfDay().get_TotalSeconds()), 2).ToString('F0'))</SecondsOfDay>
         <UtcSecondsOfDay>$([MSBuild]::Divide($([System.DateTime]::get_UtcNow().get_TimeOfDay().get_TotalSeconds()), 2).ToString('F0'))</UtcSecondsOfDay>
         <major>0</major>
-        <minor>7</minor>
+        <minor>9</minor>
         <Version>$(major).$(minor).$(UtcDayOfYear).$(UtcSecondsOfDay)</Version>
         <Authors>NetFoundry</Authors>
         <Company>NetFoundry</Company>
@@ -24,13 +24,15 @@
         <RootNamespace>OpenZiti</RootNamespace>
         <Platforms>AnyCPU;x86;x64</Platforms>
         <PackageIcon>ziti.png</PackageIcon>
+        <AssemblyVersion>$(Version)</AssemblyVersion>
+        <FileVersion>$(Version)</FileVersion>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="NLog" Version="4.7.10" />
-        <PackageReference Include="System.Memory" Version="4.5.4" />
-        <PackageReference Include="System.Text.Json" Version="4.6.0" />
-        <PackageReference Include="Ziti.NET.Standard.native" Version="0.25.4" />
+        <PackageReference Include="NLog" Version="5.0.4" />
+        <PackageReference Include="System.Memory" Version="4.5.5" />
+        <PackageReference Include="System.Text.Json" Version="6.0.6" />
+        <PackageReference Include="Ziti.NET.Standard.native" Version="0.29.1" />
     </ItemGroup>
 
     <ItemGroup>
@@ -60,7 +62,7 @@
         <Exec Command="nuget pack Ziti.NET.Standard.nuspec -Version $(PackageVersion)"></Exec>
         
         <Message Text="Push NuGet Package to NuGet Feed $(PackageOutputAbsolutePath)$(PackageId).$(PackageVersion).nupkg" Importance="high" />
-        <Exec Command="nuget add $(PackageOutputAbsolutePath)$(PackageId).$(PackageVersion).nupkg -Source ./nuget-local"></Exec>
+        <Exec Command="nuget push $(PackageOutputAbsolutePath)$(PackageId).$(PackageVersion).nupkg -ApiKey $(APIKEY) -Source https://api.nuget.org/v3/index.json"></Exec>
     </Target>
     
     <PropertyGroup Condition="'$(Platform)' == 'x64'">
