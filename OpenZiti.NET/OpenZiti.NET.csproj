@@ -18,7 +18,7 @@
         <PackageProjectUrl>https://openziti.github.io/</PackageProjectUrl> 
         <RepositoryUrl>https://github.com/openziti/ziti-sdk-csharp</RepositoryUrl>
         <RootNamespace></RootNamespace>
-        <Platforms>AnyCPU;x86;x64;ARM32;ARM64</Platforms>
+        <Platforms>AnyCPU;x86;x64;ARM64</Platforms>
         <PackageIcon>ziti.png</PackageIcon>
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
         <IncludeSymbols>true</IncludeSymbols>
@@ -27,15 +27,15 @@
 
 	<PropertyGroup Condition="'$(Platform)'=='x64'">
 		<PlatformTarget>x64</PlatformTarget>
-		<DefineConstants>ZITI_X64;$(DefineConstants)</DefineConstants>
+		<DefineConstants>ZITI_X64;$(DefinedConstants)</DefineConstants>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Platform)'=='ARM64'">
 		<PlatformTarget>arm64</PlatformTarget>
-		<DefineConstants>ZITI_X64;$(DefineConstants)</DefineConstants>
+		<DefineConstants>ZITI_X64;$(DefinedConstants)</DefineConstants>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-		<DefineConstants>TRACE;$(DefineConstants)</DefineConstants>
+		<DefineConstants>TRACE;$(DefinedConstants)</DefineConstants>
 	</PropertyGroup>
 
     <ItemGroup>
