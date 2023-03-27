@@ -177,7 +177,9 @@ void z4d_callback_on_loop(uv_loop_t* loop, void* context, z4d_cb cb) {
     uv_async_send(async);
 }
 
-
+char* z4d_test_function() {
+  return "this is a test";
+}
 
 
 #define OFFSET(MEMBERNAME) OFFSETNAMED(MEMBERNAME, MEMBERNAME)

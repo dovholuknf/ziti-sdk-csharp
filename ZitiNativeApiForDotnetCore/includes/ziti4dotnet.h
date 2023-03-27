@@ -83,6 +83,8 @@ Z4D_API ziti_posture_query* z4d_ziti_posture_query();
 
 typedef void (*z4d_cb)(void* context);
 Z4D_API void z4d_callback_on_loop(uv_loop_t* loop, void* context, z4d_cb cb);
+Z4D_API char* z4d_test_function();
+
 
 #ifdef __cplusplus
 }
