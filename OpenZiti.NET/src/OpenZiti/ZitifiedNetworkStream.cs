@@ -1,3 +1,4 @@
+#if NET6_0_OR_GREATER
 using OpenZiti.Native;
 using System;
 using System.Collections.Generic;
@@ -92,3 +93,5 @@ namespace OpenZiti {
         }
     }
 }
+
+#endif

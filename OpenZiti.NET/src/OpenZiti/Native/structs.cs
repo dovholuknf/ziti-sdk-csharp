@@ -1,3 +1,4 @@
+#if NET6_0_OR_GREATER
 /*
 Copyright NetFoundry Inc.
 
@@ -664,3 +665,5 @@ namespace OpenZiti.Native {
 #pragma warning restore 0169
 #pragma warning restore 0649
 }
+
+#endif
