@@ -110,7 +110,13 @@ jobs:
       - name: Install MacOS Ninja
         if: matrix.dist == 'macos'
         run: |
-          brew install ninja 
+          brew install ninja
+          
+      - name: Set up MSVC 2019
+        if: matrix.dist == 'win'
+        uses: microsoft/setup-msvc@v1
+        with:
+          vs-version: 2019
                     
       - name: Restore vcpkg packages
         working-directory: ${{env.GITHUB_WORKSPACE}}
