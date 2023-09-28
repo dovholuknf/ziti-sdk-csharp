@@ -112,7 +112,8 @@ jobs:
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           echo "build number = ${{ env.buildnum }}"
-          cmake -E make_directory ${{ env.TARGETDIR }}
+          echo "VCPKG_ROOT = ${{ env.VCPKG_ROOT }}"
+          cmake -E make_directory ${{ env.TARGETDIR }} -DCMAKE_TOOLCHAIN_FILE=/usr/local/share/vcpkg/scripts/buildsystems/vcpkg.cmake
           cmake -S ${{ env.BASEDIR }} -B ${{ env.TARGETDIR }} --preset ${{ matrix.preset }} ${{ matrix.cmake_arch_flag }}
           
       - name: upload artifacts
