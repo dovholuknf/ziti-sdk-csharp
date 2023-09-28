@@ -73,19 +73,19 @@ jobs:
 #            os: macOS-12
 #            arch: arm64
 #            preset: macOS-arm64
-#          - ext: dll
-#            pathext: /Release
-#            dist: win
-#            os: windows-2019
-#            arch: x64
-#            preset: win64
-#          - ext: dll
-#            pathext: /Release
-#            dist: win
-#            arch: x86
-#            cmake_arch_flag: '-A Win32'
-#            os: windows-2019
-#            preset: win32
+          - ext: dll
+            pathext: /Release
+            dist: win
+            os: windows-2019
+            arch: x64
+            preset: win64
+          - ext: dll
+            pathext: /Release
+            dist: win
+            arch: x86
+            cmake_arch_flag: '-A Win32'
+            os: windows-2019
+            preset: win32
     steps:
       - name: Echo Vars
         run: |
@@ -140,6 +140,7 @@ jobs:
           name: ${{ matrix.dist }}.${{ matrix.arch }}.${{ matrix.prefix }}ziti4dotnet.${{ matrix.ext }}
           path: ${{ env.TARGETDIR }}/library${{ matrix.pathExt }}/${{ matrix.prefix }}ziti4dotnet.${{ matrix.ext }}
           if-no-files-found: error
+          
   create-nuget-package:
     needs: [set-build-info, native-matrix-build]
     env:
