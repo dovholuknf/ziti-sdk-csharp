@@ -125,11 +125,15 @@ jobs:
       - name: Set VCPKG_ROOT
         run: echo "VCPKG_ROOT=/usr/local/share/vcpkg" >> $GITHUB_ENV
       
-      - name: configure CMake
+      - name: debug CMake
         working-directory: ${{ github.workspace }}/ZitiNativeApiForDotnetCore
         run: |
           echo "build number = ${{ env.buildnum }}"
           echo "VCPKG_ROOT = ${{ env.VCPKG_ROOT }}"
+          
+      - name: configure CMake
+        working-directory: ${{ github.workspace }}/ZitiNativeApiForDotnetCore
+        run: |
           cmake -E make_directory ${{ env.TARGETDIR }}
           
       - name: build with CMake
