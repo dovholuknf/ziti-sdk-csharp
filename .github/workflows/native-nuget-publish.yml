@@ -116,8 +116,6 @@ jobs:
       - name: Set up MSVC 2019
         if: matrix.dist == 'win'
         uses: microsoft/setup-msbuild@v1.1
-        with:
-          vs-version: 2019
                     
       - name: Restore vcpkg packages
         working-directory: ${{env.GITHUB_WORKSPACE}}
