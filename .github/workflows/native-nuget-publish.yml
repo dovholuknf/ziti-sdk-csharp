@@ -178,6 +178,7 @@ jobs:
           echo "moving the build libraries to the RIDs"
           mv ${{github.workspace}}/native/macos.x64.libziti4dotnet.dylib/libziti4dotnet.dylib ${{github.workspace}}/runtimes/osx-x64/native
           mv ${{github.workspace}}/native/macos.arm64.libziti4dotnet.dylib/libziti4dotnet.dylib ${{github.workspace}}/runtimes/osx-arm64/native
+          mv ${{github.workspace}}/native/iOS.arm64.libziti4dotnet.dylib/libziti4dotnet.dylib ${{github.workspace}}/runtimes/ios-arm64/native
           mv ${{github.workspace}}/native/Linux-arm64.arm64.libziti4dotnet.so/libziti4dotnet.so ${{github.workspace}}/runtimes/linux-arm64/native
           mv ${{github.workspace}}/native/Linux-arm.arm.libziti4dotnet.so/libziti4dotnet.so ${{github.workspace}}/runtimes/linux-arm/native
           mv ${{github.workspace}}/native/linux.x64.libziti4dotnet.so/libziti4dotnet.so ${{github.workspace}}/runtimes/linux-x64/native
