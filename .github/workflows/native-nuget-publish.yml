@@ -64,18 +64,18 @@ jobs:
             arch: arm64
             preset: linux-arm64
             pathext: /Release
-#          - ext: dylib
-#            prefix: lib
-#            dist: macos
-#            os: macOS-12
-#            arch: x64
-#            preset: macOS-x64
-#          - ext: dylib
-#            prefix: lib
-#            dist: macos
-#            os: macOS-12
-#            arch: arm64
-#            preset: macOS-arm64
+          - ext: dylib
+            prefix: lib
+            dist: macos
+            os: macOS-12
+            arch: x64
+            preset: macOS-x64
+          - ext: dylib
+            prefix: lib
+            dist: macos
+            os: macOS-12
+            arch: arm64
+            preset: macOS-arm64
           - ext: dll
             pathext: /Release
             dist: win
