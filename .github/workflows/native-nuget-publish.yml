@@ -85,19 +85,9 @@ jobs:
       - name: build with CMake
         working-directory: ${{ github.workspace }}/ZitiNativeApiForDotnetCore
         run: |
+          $VCPKG_ROOT/bootstrap-vcpkg.sh
           echo "build number = ${{ env.buildnum }}"
           echo "VCPKG_ROOT = ${{ env.VCPKG_ROOT }}"
-          cmake -E make_directory ${{ env.TARGETDIR }}
-          cmake -S ${{ env.BASEDIR }} -B ${{ env.TARGETDIR }} --preset ${{ matrix.preset }} ${{ matrix.cmake_arch_flag }}
-          
-      - name: setup/build CMake
-        run: |
-          git clone https://github.com/microsoft/vcpkg.git
-          cd vcpkg
-          ./bootstrap-vcpkg.sh
-          ./vcpkg integrate install
-          cd ..
-          echo "build number = ${{ env.buildnum }}"
           cmake -E make_directory ${{ env.TARGETDIR }}
           cmake -S ${{ env.BASEDIR }} -B ${{ env.TARGETDIR }} --preset ${{ matrix.preset }} ${{ matrix.cmake_arch_flag }}
           
