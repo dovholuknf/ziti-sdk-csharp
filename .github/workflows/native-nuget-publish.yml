@@ -123,11 +123,11 @@ jobs:
       
       - name: Set VCPKG_ROOT
         if: matrix.dist == 'linux' || matrix.dist == 'macos' 
-        run: echo "VCPKG_ROOT=/usr/local/share/vcpkg" >> $GITHUB_ENV
+        run: echo "VCPKG_ROOT=/usr/local/share/vcpkg" >> GITHUB_ENV
       
       - name: Set VCPKG_ROOT
         if: matrix.dist == 'win'
-        run: echo "VCPKG_ROOT=C:/vcpkg" >> $GITHUB_ENV
+        run: echo "VCPKG_ROOT=C:/vcpkg" >> $env:GITHUB_ENV
                 
       - name: configure / build CMake
         working-directory: ${{ github.workspace }}/ZitiNativeApiForDotnetCore
