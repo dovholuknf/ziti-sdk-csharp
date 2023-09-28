@@ -5,7 +5,7 @@ on:
     inputs:
       version:
         description: Version of CSDK/Nuget Package
-        default: _CHANGE_
+        default: 0.34.4
         required: true
        
 env:
@@ -122,7 +122,6 @@ jobs:
       - name: configure CMake
         working-directory: ${{ github.workspace }}/ZitiNativeApiForDotnetCore
         run: |
-          $VCPKG_ROOT/bootstrap-vcpkg.sh
           echo "build number = ${{ env.buildnum }}"
           echo "VCPKG_ROOT = ${{ env.VCPKG_ROOT }}"
           cmake -E make_directory ${{ env.TARGETDIR }}
