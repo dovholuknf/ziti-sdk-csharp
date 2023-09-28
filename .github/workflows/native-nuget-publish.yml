@@ -70,7 +70,7 @@ jobs:
         
       
       - name: Set VCPKG_ROOT
-        run: echo "VCPKG_ROOT=/usr/local/share/vcpkg" >> $GITHUB_OUTPUT
+        run: echo "VCPKG_ROOT=/usr/local/share/vcpkg" >> $GITHUB_ENV
       
       - name: build with CMake
         working-directory: ${{ github.workspace }}/ZitiNativeApiForDotnetCore
