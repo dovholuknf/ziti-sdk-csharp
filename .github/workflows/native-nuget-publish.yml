@@ -112,7 +112,7 @@ jobs:
           sudo apt install -y crossbuild-essential-armhf crossbuild-essential-arm64
           
       - name: Install MacOS Ninja
-        if: matrix.dist == 'macos'
+        if: matrix.dist == 'macos' || matrix.dist == 'iOS'
         run: |
           brew install ninja
           
