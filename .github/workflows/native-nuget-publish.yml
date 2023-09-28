@@ -124,22 +124,19 @@ jobs:
       
       - name: Set VCPKG_ROOT
         run: echo "VCPKG_ROOT=/usr/local/share/vcpkg" >> $GITHUB_ENV
-      
-      - name: debug CMake
+                
+      - name: configure / build CMake
         working-directory: ${{ github.workspace }}/ZitiNativeApiForDotnetCore
         run: |
           echo "build number = ${{ env.buildnum }}"
           echo "VCPKG_ROOT = ${{ env.VCPKG_ROOT }}"
-          
-      - name: configure CMake
-        working-directory: ${{ github.workspace }}/ZitiNativeApiForDotnetCore
-        run: |
           cmake -E make_directory ${{ env.TARGETDIR }}
+          cmake -S ${{ env.BASEDIR }} -B ${{ env.TARGETDIR }} --preset ${{ matrix.preset }} ${{ matrix.cmake_arch_flag }}
+          cmake --build -B ${{ env.TARGETDIR }}
           
       - name: build with CMake
         working-directory: ${{ github.workspace }}/ZitiNativeApiForDotnetCore
         run: |
-          cmake -S ${{ env.BASEDIR }} -B ${{ env.TARGETDIR }} --preset ${{ matrix.preset }} ${{ matrix.cmake_arch_flag }}
           
       - name: upload artifacts
         uses: actions/upload-artifact@v3
