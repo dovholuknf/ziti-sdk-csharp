@@ -58,6 +58,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install Linux pkg-config
+        if: matrix.linux == 'linux'
+        run: |
+          sudo apt update -y
+          sudo apt install -y pkg-config
+          
       - name: Install Crossbuild tools
         if: matrix.os == 'ubuntu-20.04' && contains(matrix.arch, 'arm')
         run: |
