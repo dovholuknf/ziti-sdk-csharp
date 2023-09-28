@@ -59,7 +59,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install Linux pkg-config
-        if: matrix.linux == 'linux'
+        if: matrix.dist == 'linux'
         run: |
           sudo apt update -y
           sudo apt install -y pkg-config
