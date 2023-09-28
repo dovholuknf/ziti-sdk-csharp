@@ -73,13 +73,15 @@ jobs:
           vcpkgGitCommitId: '19af97cba8ca48474e4ad15a24ed50271a9ecdac'
 
       - uses: lukka/run-cmake@v10
+        working-directory: ${{ github.workspace }}/ZitiNativeApiForDotnetCore
         name: Configure CMake
         with:
           configurePreset: ${{ matrix.preset }}
-          cmakeListsTxtPath: '${{ github.workspace }}/ZitiNativeApiForDotnetCore/CMakeLists.txt'
+          cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
           configurePresetAdditionalArgs: "[ `-B`, `./build` ]"  
 
       - name: build CMake
+        working-directory: ${{ github.workspace }}/ZitiNativeApiForDotnetCore
         run: cmake --build ./build --config Release
         shell: bash
       
@@ -87,7 +89,7 @@ jobs:
         run: echo "VCPKG_ROOT=/usr/local/share/vcpkg" >> $GITHUB_OUTPUT
       
       - name: build with CMake
-        working-directory: ${{env.GITHUB_WORKSPACE}}
+        working-directory: ${{ github.workspace }}/ZitiNativeApiForDotnetCore
         run: |
           echo "build number = ${{ env.buildnum }}"
           echo "VCPKG_ROOT = ${{ env.VCPKG_ROOT }}"
