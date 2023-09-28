@@ -113,11 +113,12 @@ jobs:
         name: Configure CMake
         with:
           configurePreset: ${{ matrix.preset }}
+          cmakeListsTxtPath: '${{ github.workspace }}/ZitiNativeApiForDotnetCore/CMakeLists.txt'
           configurePresetAdditionalArgs: "[ `-B`, `./build` ]"  
 
       - name: build CMake
         run: cmake --build ./build --config Release
-        shell: bash    
+        shell: bash
       
       - name: Set VCPKG_ROOT
         run: echo "VCPKG_ROOT=/usr/local/share/vcpkg" >> $GITHUB_OUTPUT
