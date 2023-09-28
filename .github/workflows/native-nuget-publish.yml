@@ -114,7 +114,7 @@ jobs:
           
       - name: Set up MSVC 2019
         if: matrix.dist == 'win'
-        uses: microsoft/setup-msvc@v1
+        uses: microsoft/setup-msbuild@v1
         with:
           vs-version: 2019
                     
