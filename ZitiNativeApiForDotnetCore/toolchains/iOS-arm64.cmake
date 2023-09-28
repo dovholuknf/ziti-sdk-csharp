@@ -10,4 +10,3 @@ set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
 set(VCPKG_TARGET_TRIPLET arm64-ios)
-include($ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
