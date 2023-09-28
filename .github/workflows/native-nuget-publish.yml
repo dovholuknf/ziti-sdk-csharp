@@ -49,6 +49,7 @@ jobs:
             os: ubuntu-20.04
             arch: x64
             preset: linux-x64
+            pathext: /Release
 #          - ext: so
 #            prefix: lib
 #            dist: 'Linux-arm'
@@ -132,7 +133,7 @@ jobs:
           echo "VCPKG_ROOT = ${{ env.VCPKG_ROOT }}"
           cmake -E make_directory ${{ env.TARGETDIR }}
           cmake -S ${{ env.BASEDIR }} -B ${{ env.TARGETDIR }} --preset ${{ matrix.preset }} ${{ matrix.cmake_arch_flag }}
-          cmake --build ${{ env.TARGETDIR }}
+          cmake --build ${{ env.TARGETDIR }} --config Release
           
       - name: upload artifacts
         uses: actions/upload-artifact@v3
