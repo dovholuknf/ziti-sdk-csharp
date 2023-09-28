@@ -76,9 +76,9 @@ jobs:
           - ext: dylib
             prefix: lib
             dist: iOS
-            os: macOS-12
+            os: macOS-13
             arch: arm64
-            toolchain: 'iOS-arm64'
+            preset: ios-arm64
           - ext: dll
             dist: win
             os: windows-2022
