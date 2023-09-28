@@ -49,43 +49,36 @@ jobs:
             os: ubuntu-20.04
             arch: x64
             preset: linux-x64
-            pathext: /Release
           - ext: so
             prefix: lib
             dist: 'Linux-arm'
             os: ubuntu-20.04
             arch: arm
             preset: linux-arm
-            pathext: /Release
           - ext: so
             prefix: lib
             dist: 'Linux-arm64'
             os: ubuntu-20.04
             arch: arm64
             preset: linux-arm64
-            pathext: /Release
+#          - ext: dylib
+#            prefix: lib
+#            dist: macos
+#            os: macOS-13
+#            arch: x64
+#            preset: macOS-x64
           - ext: dylib
             prefix: lib
             dist: macos
-            os: macOS-12
-            arch: x64
-            preset: macOS-x64
-            pathext: /Release
-          - ext: dylib
-            prefix: lib
-            dist: macos
-            os: macOS-12
+            os: macOS-13
             arch: arm64
             preset: macOS-arm64
-            pathext: /Release
           - ext: dll
-            pathext: /Release
             dist: win
             os: windows-2022
             arch: x64
             preset: win64
           - ext: dll
-            pathext: /Release
             dist: win
             arch: x86
             cmake_arch_flag: '-A Win32'
@@ -146,7 +139,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.dist }}.${{ matrix.arch }}.${{ matrix.prefix }}ziti4dotnet.${{ matrix.ext }}
-          path: ${{ env.TARGETDIR }}/library${{ matrix.pathExt }}/${{ matrix.prefix }}ziti4dotnet.${{ matrix.ext }}
+          path: ${{ env.TARGETDIR }}/library/Release/${{ matrix.prefix }}ziti4dotnet.${{ matrix.ext }}
           if-no-files-found: error
           
   create-nuget-package:
