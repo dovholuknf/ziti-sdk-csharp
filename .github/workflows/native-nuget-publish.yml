@@ -109,6 +109,7 @@ jobs:
         run: echo "VCPKG_ROOT=/usr/local/share/vcpkg" >> $GITHUB_OUTPUT
       
       - name: build with CMake
+        working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           echo "build number = ${{ env.buildnum }}"
           cmake -E make_directory ${{ env.TARGETDIR }}
