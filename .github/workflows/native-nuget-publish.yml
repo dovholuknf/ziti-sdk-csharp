@@ -62,7 +62,7 @@ jobs:
         if: matrix.dist == 'linux'
         run: |
           sudo apt update -y
-          sudo apt install -y pkg-config
+          sudo apt install -y pkg-config ninja-build
           
       - name: Install Crossbuild tools
         if: matrix.os == 'ubuntu-20.04' && contains(matrix.arch, 'arm')
