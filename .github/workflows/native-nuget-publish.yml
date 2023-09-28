@@ -125,7 +125,7 @@ jobs:
         run: vcpkg integrate install
       
       - name: Set VCPKG_ROOT
-        if: matrix.os == 'ubuntu-20.04' || matrix.dist == 'macos' 
+        if: matrix.os == 'ubuntu-20.04' || matrix.dist == 'macos' || matrix.dist == 'iOS'
         run: echo "VCPKG_ROOT=/usr/local/share/vcpkg" >> $GITHUB_ENV
       
       - name: Set VCPKG_ROOT
