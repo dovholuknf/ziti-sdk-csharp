@@ -70,12 +70,14 @@ jobs:
             os: macOS-12
             arch: x64
             preset: macOS-x64
+            pathext: /Release
           - ext: dylib
             prefix: lib
             dist: macos
             os: macOS-12
             arch: arm64
             preset: macOS-arm64
+            pathext: /Release
           - ext: dll
             pathext: /Release
             dist: win
