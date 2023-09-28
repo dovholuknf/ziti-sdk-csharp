@@ -170,6 +170,7 @@ jobs:
           echo "creating the RIDs"
           mkdir -p ${{github.workspace}}/runtimes/osx-x64/native
           mkdir -p ${{github.workspace}}/runtimes/osx-arm64/native
+          mkdir -p ${{github.workspace}}/runtimes/ios-arm64/native
           mkdir -p ${{github.workspace}}/runtimes/linux-arm/native
           mkdir -p ${{github.workspace}}/runtimes/linux-arm64/native
           mkdir -p ${{github.workspace}}/runtimes/linux-x64/native
