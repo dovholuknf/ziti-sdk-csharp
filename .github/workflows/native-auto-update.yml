@@ -1,0 +1,76 @@
+name: Auto-update Native Ziti SDK
+
+on:
+  schedule:
+    # Run nightly at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      skip_publish:
+        description: 'Skip publishing to NuGet (test mode)'
+        required: false
+        type: boolean
+        default: false
+      force:
+        description: 'Force rebuild even if version unchanged'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  auto-update:
+    runs-on: windows-latest
+    if: github.repository_owner == 'openziti'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+
+      - name: Run auto-update script
+        shell: pwsh
+        working-directory: OpenZiti.NET.Native
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          $params = @{}
+          if ("${{ inputs.skip_publish }}" -eq "true") {
+            $params['SkipPublish'] = $true
+          }
+          if ("${{ inputs.force }}" -eq "true") {
+            $params['Force'] = $true
+          }
+
+          .\AutoUpdateAndPublish.ps1 @params
+
+      - name: Commit version update
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          cd OpenZiti.NET.Native
+          git add version.props
+
+          if (git diff --staged --quiet) {
+            Write-Host "No changes to commit"
+          } else {
+            $version = ([xml](Get-Content version.props)).Project.PropertyGroup.Version
+            git commit -m "Auto-update ziti-sdk-c to $version"
+            git push
+            Write-Host "Committed and pushed version update to $version"
+          }
+
+      - name: Upload package artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-package
+          path: OpenZiti.NET.Native/nupkg/*.nupkg
+          if-no-files-found: warn
