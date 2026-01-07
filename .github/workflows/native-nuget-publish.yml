@@ -21,6 +21,7 @@ env:
   TARGETDIR: ${{ github.workspace }}/ZitiNativeApiForDotnetCore/build
 jobs:
   set-build-info:
+    if: github.repository_owner == 'openziti'
     runs-on: ubuntu-latest
     outputs:
       now: ${{ steps.buildinfo.outputs.now }}
@@ -49,7 +50,7 @@ jobs:
             echo "qualifier=-${BRANCH_NAME}rc${{github.run_number}}" >> $GITHUB_OUTPUT
           fi
   native-matrix-build:
-    if: "!contains(github.event.head_commit.message, 'ci skip') && ${{ github.actor != 'dependabot[bot]' }}"
+    if: "!contains(github.event.head_commit.message, 'ci skip') && ${{ github.actor != 'dependabot[bot]' && github.repository_owner == 'openziti' }}"
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -154,6 +155,7 @@ jobs:
           if-no-files-found: error
           
   create-nuget-package:
+    if: github.repository_owner == 'openziti'
     needs: [set-build-info, native-matrix-build]
     env:
       now: ${{needs.set-build-info.outputs.now}}
@@ -215,5 +217,5 @@ jobs:
           path: OpenZiti.NET.native.${{env.resolvedversion}}.nupkg
           if-no-files-found: error
       - name: Publish OpenZiti.NET.native
-        if: "${{ github.repository == 'openziti/ziti-sdk-csharp'}}"
+        if: github.repository_owner == 'openziti'
         run: dotnet nuget push OpenZiti.NET.native.${{env.resolvedversion}}.nupkg --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
