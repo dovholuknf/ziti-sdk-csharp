@@ -310,9 +310,14 @@ try {
             throw "Smoke test failed"
         }
 
+        # Display smoke test output
+        Write-Info "Smoke test output:"
+        $output | ForEach-Object { Write-Info "  $_" }
+
         # Verify output contains version info
-        if ($output -match "version=(.+)") {
-            $smokeVersion = $matches[1]
+        $outputText = $output -join "`n"
+        if ($outputText -match "version=(.+)") {
+            $smokeVersion = $matches[1].Trim()
             Write-Info "Native library version: $smokeVersion"
 
             if ($smokeVersion -eq $latestVersion) {
@@ -320,11 +325,9 @@ try {
             } else {
                 Write-Warning "Version mismatch: expected $latestVersion, got $smokeVersion"
             }
+        } else {
+            Write-Warning "Could not extract version from smoke test output"
         }
-
-        # Display smoke test output
-        Write-Info "Smoke test output:"
-        $output | ForEach-Object { Write-Info "  $_" }
 
         # Cleanup
         if (Test-Path $tempNuGetConfig) {
